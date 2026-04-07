@@ -1,0 +1,19 @@
+{
+    "name": "orangecat/module-purchase-order",
+    "description": "Orangecat Purchase Order module for B2B",
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "require": {
+        "php": "~8.1.0||~8.2.0",
+        "magento/framework": "*",
+        "orangecat/module-company": "*"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Orangecat\\PurchaseOrder\\": ""
+        }
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "purchase_order": {
+        "column": {
+            "entity_id": true,
+            "increment_id": true,
+            "quote_id": true,
+            "company_id": true,
+            "creator_id": true,
+            "status": true,
+            "grand_total": true,
+            "snapshot": true,
+            "order_id": true,
+            "order_increment_id": true,
+            "expires_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "PURCHASE_ORDER_COMPANY_ID_MYCOMPANY_ENTITY_ID": true,
+            "PURCHASE_ORDER_CREATOR_ID_CUSTOMER_ENTITY_ENTITY_ID": true
+        }
+    },
+    "purchase_order_log": {
+        "column": {
+            "log_id": true,
+            "purchase_order_id": true,
+            "actor_id": true,
+            "action": true,
+            "comment": true,
+            "created_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "PURCHASE_ORDER_LOG_PURCHASE_ORDER_ID_PURCHASE_ORDER_ENTITY_ID": true
+        }
+    }
+}

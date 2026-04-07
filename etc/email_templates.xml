@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * This file is part of the Orangecat PurchaseOrder package.
+ *
+ * (c) Oliverio Gombert <olivertar@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="purchaseorder_email_created" label="Purchase Order Created" file="purchaseorder_created.html" type="html" module="Orangecat_PurchaseOrder" area="frontend"/>
+    <template id="purchaseorder_email_approved" label="Purchase Order Approved" file="purchaseorder_approved.html" type="html" module="Orangecat_PurchaseOrder" area="frontend"/>
+    <template id="purchaseorder_email_rejected" label="Purchase Order Rejected" file="purchaseorder_rejected.html" type="html" module="Orangecat_PurchaseOrder" area="frontend"/>
+</config>

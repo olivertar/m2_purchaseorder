@@ -1,0 +1,142 @@
+<?php
+/**
+ * This file is part of the Orangecat PurchaseOrder package.
+ *
+ * (c) Oliverio Gombert <olivertar@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+/** @var \Orangecat\PurchaseOrder\Block\Order\View $block */
+$po = $block->getPurchaseOrder();
+$items = $block->getSnapshotItems();
+$totals = $block->getSnapshotTotals();
+$logs = $block->getActivityLog();
+?>
+<?php if ($po): ?>
+    <div class="order-details-items ordered">
+        <div class="order-title">
+            <strong><?= $block->escapeHtml(__('Items Ordered')) ?></strong>
+        </div>
+        <div class="table-wrapper order-items">
+            <table class="data table table-order-items" id="my-purchase-order-table">
+                <caption class="table-caption"><?= $block->escapeHtml(__('Items Ordered')) ?></caption>
+                <thead>
+                    <tr>
+                        <th class="col name"><?= $block->escapeHtml(__('Product Name')) ?></th>
+                        <th class="col sku"><?= $block->escapeHtml(__('SKU')) ?></th>
+                        <th class="col price"><?= $block->escapeHtml(__('Price')) ?></th>
+                        <th class="col qty"><?= $block->escapeHtml(__('Qty')) ?></th>
+                        <th class="col subtotal"><?= $block->escapeHtml(__('Subtotal')) ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($items as $item): ?>
+                        <tr>
+                            <td class="col name" data-th="<?= $block->escapeHtml(__('Product Name')) ?>">
+                                <strong class="product name"><?= $block->escapeHtml($item['name']) ?></strong>
+                            </td>
+                            <td class="col sku" data-th="<?= $block->escapeHtml(__('SKU')) ?>"><?= $block->escapeHtml($item['sku']) ?></td>
+                            <td class="col price" data-th="<?= $block->escapeHtml(__('Price')) ?>"><?= /* @noEscape */ $this->helper(\Magento\Framework\Pricing\Helper\Data::class)->currency($item['price'], true, false) ?></td>
+                            <td class="col qty" data-th="<?= $block->escapeHtml(__('Qty')) ?>"><?= (float)$item['qty'] ?></td>
+                            <td class="col subtotal" data-th="<?= $block->escapeHtml(__('Subtotal')) ?>"><?= /* @noEscape */ $this->helper(\Magento\Framework\Pricing\Helper\Data::class)->currency($item['row_total'], true, false) ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+                <tfoot>
+                    <tr class="subtotal">
+                        <th colspan="4" class="mark" scope="row"><?= $block->escapeHtml(__('Subtotal')) ?></th>
+                        <td class="amount" data-th="<?= $block->escapeHtml(__('Subtotal')) ?>"><?= /* @noEscape */ $this->helper(\Magento\Framework\Pricing\Helper\Data::class)->currency($totals['subtotal'], true, false) ?></td>
+                    </tr>
+                    <tr class="shipping">
+                        <th colspan="4" class="mark" scope="row"><?= $block->escapeHtml(__('Shipping & Handling')) ?></th>
+                        <td class="amount" data-th="<?= $block->escapeHtml(__('Shipping & Handling')) ?>"><?= /* @noEscape */ $this->helper(\Magento\Framework\Pricing\Helper\Data::class)->currency($totals['shipping_amount'], true, false) ?></td>
+                    </tr>
+                    <tr class="tax">
+                        <th colspan="4" class="mark" scope="row"><?= $block->escapeHtml(__('Tax')) ?></th>
+                        <td class="amount" data-th="<?= $block->escapeHtml(__('Tax')) ?>"><?= /* @noEscape */ $this->helper(\Magento\Framework\Pricing\Helper\Data::class)->currency($totals['tax_amount'], true, false) ?></td>
+                    </tr>
+                    <tr class="grand_total">
+                        <th colspan="4" class="mark" scope="row"><strong><?= $block->escapeHtml(__('Grand Total')) ?></strong></th>
+                        <td class="amount" data-th="<?= $block->escapeHtml(__('Grand Total')) ?>">
+                            <strong><?= /* @noEscape */ $this->helper(\Magento\Framework\Pricing\Helper\Data::class)->currency($totals['grand_total'], true, false) ?></strong>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <div class="block block-order-details-view">
+        <div class="block-title">
+            <strong><?= $block->escapeHtml(__('Purchase Order Information')) ?></strong>
+        </div>
+        <div class="block-content">
+            <div class="box box-order-shipment-method">
+                <strong class="box-title"><span><?= $block->escapeHtml(__('Shipping Method')) ?></span></strong>
+                <div class="box-content">
+                    <?= $block->escapeHtml($totals['shipping_method'] ?? __('N/A')) ?>
+                </div>
+            </div>
+            <div class="box box-order-billing-address">
+                <strong class="box-title"><span><?= $block->escapeHtml(__('Buyer')) ?></span></strong>
+                <div class="box-content">
+                    <?= $block->escapeHtml($block->getCreatorName($po)) ?>
+                </div>
+            </div>
+            <div class="box box-order-billing-address">
+                <strong class="box-title"><span><?= $block->escapeHtml(__('Status')) ?></span></strong>
+                <div class="box-content">
+                    <?= $block->escapeHtml($block->getStatusLabel($po->getStatus())) ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="block block-order-details-view">
+        <div class="block-title">
+            <strong><?= $block->escapeHtml(__('Activity Log')) ?></strong>
+        </div>
+        <div class="block-content">
+            <div class="table-wrapper logs">
+                <table class="data table table-logs">
+                    <thead>
+                        <tr>
+                            <th class="col date"><?= $block->escapeHtml(__('Date')) ?></th>
+                            <th class="col action"><?= $block->escapeHtml(__('Action')) ?></th>
+                            <th class="col note"><?= $block->escapeHtml(__('Notes')) ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($logs as $log): ?>
+                            <tr>
+                                <td class="col date"><?= $block->escapeHtml($log->getCreatedAt()) ?></td>
+                                <td class="col action"><?= $block->escapeHtml(ucfirst($log->getAction())) ?></td>
+                                <td class="col note"><?= $block->escapeHtml($log->getComment()) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="actions-toolbar" data-mage-init='{"Orangecat_PurchaseOrder/js/purchase-order-actions": {}}'>
+        <?php if ($block->canCancel()): ?>
+            <div class="primary">
+                <form action="<?= $block->escapeUrl($block->getCancelUrl()) ?>" method="post">
+                    <?= $block->getBlockHtml('formkey') ?>
+                    <button type="submit" class="action primary delete action-cancel" title="<?= $block->escapeHtml(__('Cancel Purchase Order')) ?>">
+                        <span><?= $block->escapeHtml(__('Cancel Purchase Order')) ?></span>
+                    </button>
+                </form>
+            </div>
+        <?php endif; ?>
+        <div class="secondary">
+            <a class="action back" href="<?= $block->escapeUrl($block->getUrl('*/*/index')) ?>">
+                <span><?= $block->escapeHtml(__('Back to My Purchase Orders')) ?></span>
+            </a>
+        </div>
+    </div>
+<?php endif; ?>

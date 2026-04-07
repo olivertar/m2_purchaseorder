@@ -1,0 +1,30 @@
+<!--
+/**
+ * This file is part of the Orangecat PurchaseOrder package.
+ *
+ * (c) Oliverio Gombert <olivertar@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+-->
+<!--@subject Purchase Order {{var purchaseOrder.increment_id}} requires approval @-->
+<!--@vars {
+"var purchaseOrder.increment_id":"Purchase Order ID",
+"var customer.name":"Customer Name",
+"var store.getFrontendName()":"Store Name"
+} @-->
+{{template config_path="design/email/header_template"}}
+
+<table class="message-info">
+    <tr>
+        <td>
+            <p class="greeting">{{trans "Hello %admin_name," admin_name=$company.admin_name}}</p>
+            <p>{{trans "A new purchase order (#%purchase_order_id) has been created by %customer_name and requires your approval." purchase_order_id=$purchaseOrder.increment_id customer_name=$customer.name}}</p>
+            <p>{{trans "Order Total: %total" total=$purchaseOrder.getGrandTotal()}}</p>
+            <p>{{trans "Please log in to your account to review and approve or reject this purchase order."}}</p>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}

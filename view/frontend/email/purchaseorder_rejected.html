@@ -1,0 +1,35 @@
+<!--
+/**
+ * This file is part of the Orangecat PurchaseOrder package.
+ *
+ * (c) Oliverio Gombert <olivertar@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+-->
+<!--@subject Your Purchase Order {{var purchaseOrder.increment_id}} has been rejected @-->
+<!--@vars {
+"var purchaseOrder.increment_id":"Purchase Order ID",
+"var customer.name":"Customer Name",
+"var rejection_comment":"Rejection Reason",
+"var store.getFrontendName()":"Store Name"
+} @-->
+{{template config_path="design/email/header_template"}}
+
+<table class="message-info">
+    <tr>
+        <td>
+            <p class="greeting">{{trans "Hello %customer_name," customer_name=$customer.name}}</p>
+            <p>{{trans "Your purchase order (#%purchase_order_id) has been rejected by a company administrator." purchase_order_id=$purchaseOrder.increment_id}}</p>
+            
+            {{depend rejection_comment}}
+            <p>{{trans "Reason: %reason" reason=$rejection_comment}}</p>
+            {{/depend}}
+            
+            <p>{{trans "Please contact your company administrator if you have any questions."}}</p>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}

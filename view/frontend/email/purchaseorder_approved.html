@@ -1,0 +1,30 @@
+<!--
+/**
+ * This file is part of the Orangecat PurchaseOrder package.
+ *
+ * (c) Oliverio Gombert <olivertar@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+-->
+<!--@subject Your Purchase Order {{var purchaseOrder.increment_id}} has been approved @-->
+<!--@vars {
+"var purchaseOrder.increment_id":"Purchase Order ID",
+"var customer.name":"Customer Name",
+"var order.increment_id":"Magento Order ID",
+"var store.getFrontendName()":"Store Name"
+} @-->
+{{template config_path="design/email/header_template"}}
+
+<table class="message-info">
+    <tr>
+        <td>
+            <p class="greeting">{{trans "Hello %customer_name," customer_name=$customer.name}}</p>
+            <p>{{trans "Good news! Your purchase order (#%purchase_order_id) has been approved." purchase_order_id=$purchaseOrder.increment_id}}</p>
+            <p>{{trans "A new order (#%order_id) has been created and will be processed shortly." order_id=$order.increment_id}}</p>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}

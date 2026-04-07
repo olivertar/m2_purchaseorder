@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- =====================================================================
+         Interface → Implementation preferences
+         ===================================================================== -->
+    <preference for="Orangecat\PurchaseOrder\Api\Data\PurchaseOrderInterface"
+                type="Orangecat\PurchaseOrder\Model\PurchaseOrder"/>
+
+    <preference for="Orangecat\PurchaseOrder\Api\Data\PurchaseOrderSearchResultsInterface"
+                type="Magento\Framework\Api\SearchResults"/>
+
+    <preference for="Orangecat\PurchaseOrder\Api\Data\PurchaseOrderLogInterface"
+                type="Orangecat\PurchaseOrder\Model\PurchaseOrderLog"/>
+
+    <preference for="Orangecat\PurchaseOrder\Api\Data\PurchaseOrderLogSearchResultsInterface"
+                type="Magento\Framework\Api\SearchResults"/>
+
+    <preference for="Orangecat\PurchaseOrder\Api\PurchaseOrderRepositoryInterface"
+                type="Orangecat\PurchaseOrder\Model\PurchaseOrderRepository"/>
+
+    <preference for="Orangecat\PurchaseOrder\Api\PurchaseOrderLogRepositoryInterface"
+                type="Orangecat\PurchaseOrder\Model\PurchaseOrderLogRepository"/>
+
+    <!-- =====================================================================
+         Approval Rule Chain — extensible rule registry.
+
+         To add a new approval rule in the future:
+           1. Create a class implementing ApprovalRuleInterface.
+           2. Add a new <item> entry below using any unique key.
+           3. Zero PHP files need to be modified.
+         ===================================================================== -->
+    <type name="Orangecat\PurchaseOrder\Model\ApprovalRuleChain">
+        <arguments>
+            <argument name="rules" xsi:type="array">
+                <item name="maxPurchaseAmount" xsi:type="object">
+                    Orangecat\PurchaseOrder\Model\Rule\MaxPurchaseAmountRule
+                </item>
+                <item name="maxPeriodAmount" xsi:type="object">
+                    Orangecat\PurchaseOrder\Model\Rule\MaxPeriodAmountRule
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- =====================================================================
+         Logger — inject a channel-specific logger for PurchaseOrder.
+         This enables filtering PO log entries in Magento's log files
+         via the channel name "OrangecatPurchaseOrder".
+         ===================================================================== -->
+    <type name="Orangecat\PurchaseOrder\Model\PurchaseOrderManagement">
+        <arguments>
+            <argument name="logger" xsi:type="object">OrangecatPurchaseOrderLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="Orangecat\PurchaseOrder\Model\ApprovalRuleChain">
+        <arguments>
+            <argument name="logger" xsi:type="object">OrangecatPurchaseOrderLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="Orangecat\PurchaseOrder\Model\Rule\MaxPurchaseAmountRule">
+        <arguments>
+            <argument name="logger" xsi:type="object">OrangecatPurchaseOrderLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="Orangecat\PurchaseOrder\Model\Rule\MaxPeriodAmountRule">
+        <arguments>
+            <argument name="logger" xsi:type="object">OrangecatPurchaseOrderLogger</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="OrangecatPurchaseOrderLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="name" xsi:type="string">OrangecatPurchaseOrder</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Magento\Framework\Logger\Handler\System</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- =====================================================================
+         Checkout Interception — Phase 6 plugins.
+
+         sortOrder="10" ensures these plugins run early, before any third-party
+         integrations that may also observe placeOrder(). If another module
+         needs to run before ours (e.g. gift wrapping, reward points), its
+         plugin should use sortOrder < 10.
+         ===================================================================== -->
+
+    <!-- Intercepts QuoteManagement::placeOrder() to apply PO approval rules. -->
+    <type name="Magento\Quote\Model\QuoteManagement">
+        <plugin name="purchase_order_intercept_place_order"
+                type="Orangecat\PurchaseOrder\Plugin\Checkout\PlaceOrderPlugin"
+                sortOrder="10"/>
+    </type>
+
+    <!-- Intercepts PaymentInformationManagement to catch PurchaseOrderCreatedException
+         and store the PO in session before returning a clean "0" to the checkout JS. -->
+    <!-- Intercepts PaymentInformationManagement to catch PurchaseOrderCreatedException
+         and store the PO in session before returning a clean "0" to the checkout JS. -->
+    <type name="Magento\Checkout\Api\PaymentInformationManagementInterface">
+        <plugin name="purchase_order_payment_information"
+                type="Orangecat\PurchaseOrder\Plugin\Checkout\PaymentInformationPlugin"
+                sortOrder="10"/>
+    </type>
+
+    <type name="Magento\Checkout\Api\GuestPaymentInformationManagementInterface">
+        <plugin name="purchase_order_guest_payment_information"
+                type="Orangecat\PurchaseOrder\Plugin\Checkout\PaymentInformationPlugin"
+                sortOrder="10"/>
+    </type>
+
+</config>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="purchase_order" resource="default" engine="innodb" comment="Orangecat Purchase Order Table">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="varchar" name="increment_id" length="50" nullable="true" comment="Increment ID"/>
+        <column xsi:type="int" name="quote_id" padding="10" unsigned="true" nullable="false" comment="Quote ID"/>
+        <column xsi:type="int" name="company_id" padding="10" unsigned="true" nullable="false" comment="Company ID"/>
+        <column xsi:type="int" name="creator_id" padding="10" unsigned="true" nullable="true" comment="Creator Customer ID"/>
+        <column xsi:type="varchar" name="status" length="50" nullable="false" comment="PO Status"/>
+        <column xsi:type="decimal" name="grand_total" precision="12" scale="4" nullable="false" comment="Grand Total"/>
+        <column xsi:type="mediumtext" name="snapshot" nullable="true" comment="Quote Snapshot JSON"/>
+        <column xsi:type="int" name="order_id" padding="10" unsigned="true" nullable="true" comment="Magento Order ID"/>
+        <column xsi:type="varchar" name="order_increment_id" length="50" nullable="true" comment="Magento Order Increment ID"/>
+        <column xsi:type="timestamp" name="expires_at" on_update="false" nullable="true" comment="Expiration Date"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="PURCHASE_ORDER_COMPANY_ID_MYCOMPANY_ENTITY_ID" table="purchase_order" column="company_id" referenceTable="mycompany" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="PURCHASE_ORDER_CREATOR_ID_CUSTOMER_ENTITY_ENTITY_ID" table="purchase_order" column="creator_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="SET NULL"/>
+    </table>
+
+    <table name="purchase_order_log" resource="default" engine="innodb" comment="Orangecat Purchase Order Log Table">
+        <column xsi:type="int" name="log_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Log ID"/>
+        <column xsi:type="int" name="purchase_order_id" padding="10" unsigned="true" nullable="false" comment="PO ID"/>
+        <column xsi:type="int" name="actor_id" padding="10" unsigned="true" nullable="true" comment="Actor Customer ID"/>
+        <column xsi:type="varchar" name="action" length="100" nullable="false" comment="Action Performed"/>
+        <column xsi:type="text" name="comment" nullable="true" comment="Action Comment"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="log_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="PURCHASE_ORDER_LOG_PO_ID_PURCHASE_ORDER_ENTITY_ID" table="purchase_order_log" column="purchase_order_id" referenceTable="purchase_order" referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+</schema>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * This file is part of the Orangecat PurchaseOrder package.
+ *
+ * (c) Oliverio Gombert <olivertar@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template" name="purchaseorder.success" template="Orangecat_PurchaseOrder::success.phtml" before="-"/>
+        </referenceContainer>
+        <!-- The success.phtml will check if a PO exists in session and show its content, 
+             otherwise it will stay empty. The regular success message might need hidding 
+             via CSS or a more complex layout plugin if we want to be perfect, 
+             but this is the standard way to inject the PO info. -->
+    </body>
+</page>

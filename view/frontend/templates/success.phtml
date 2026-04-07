@@ -1,0 +1,28 @@
+<?php
+/**
+ * This file is part of the Orangecat PurchaseOrder package.
+ *
+ * (c) Oliverio Gombert <olivertar@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Magento\Checkout\Model\Session $checkoutSession */
+$checkoutSession = \Magento\Framework\App\ObjectManager::getInstance()->get(\Magento\Checkout\Model\Session::class);
+$poId = $checkoutSession->getData('last_purchase_order_id');
+$poIncrementId = $checkoutSession->getData('last_purchase_order_increment_id');
+?>
+<?php if ($poId): ?>
+    <div class="checkout-success">
+        <h1 class="page-title">
+            <span class="base" data-ui-id="page-title-wrapper"><?= $block->escapeHtml(__('Your purchase order has been received.')) ?></span>
+        </h1>
+        <div class="message success">
+            <div><?= $block->escapeHtml(__('Your purchase order number is: %1.', $poIncrementId)) ?></div>
+            <div><?= $block->escapeHtml(__('It is currently pending approval.')) ?></div>
+        </div>
+        <p><?= $block->escapeHtml(__('We\'ll email you a confirmation when your order is approved.')) ?></p>
+    </div>
+<?php endif; ?>
