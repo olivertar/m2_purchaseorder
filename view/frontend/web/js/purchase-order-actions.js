@@ -7,10 +7,10 @@ define([
 ], function ($, confirm, prompt, alert) {
     'use strict';
 
-    return function (config, element) {
+    var initializer = function (config, element) {
         var $element = $(element);
 
-        $element.find('.action-approve').on('click', function (e) {
+        $element.on('click', '.action-approve', function (e) {
             e.preventDefault();
             var form = $(this).closest('form');
             confirm({
@@ -23,14 +23,15 @@ define([
             });
         });
 
-        $element.find('.action-reject').on('click', function () {
+        $element.on('click', '.action-reject', function (e) {
+            e.preventDefault();
             var $button = $(this);
             var url = $button.data('url');
             var poId = $button.data('id');
             var formKey = $button.data('form-key');
-            
+
             prompt({
-                content: $.mage.__('Please enter a rejection reason for PO #') + poId + ':',
+                label: $.mage.__('Please enter a rejection reason for PO #') + poId + ':',
                 actions: {
                     confirm: function (comment) {
                         if (!comment || comment.trim() === '') {
@@ -60,7 +61,7 @@ define([
             });
         });
 
-        $element.find('.action-cancel').on('click', function (e) {
+        $element.on('click', '.action-cancel', function (e) {
             e.preventDefault();
             var form = $(this).closest('form');
             confirm({
@@ -73,4 +74,10 @@ define([
             });
         });
     };
+
+    if ($.breezemap) {
+        $.breezemap['Orangecat_PurchaseOrder/js/purchase-order-actions'] = initializer;
+    }
+
+    return initializer;
 });
