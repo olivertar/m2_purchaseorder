@@ -33,6 +33,7 @@ class ListOrder extends Template
      * @param CompanyManagementInterface $companyManagement
      * @param FormKey $formKey
      * @param CustomerRepositoryInterface $customerRepository
+     * @param \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency
      * @param array $data
      */
     public function __construct(
@@ -42,9 +43,21 @@ class ListOrder extends Template
         protected CompanyManagementInterface $companyManagement,
         protected FormKey $formKey,
         protected CustomerRepositoryInterface $customerRepository,
+        protected \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency,
         array $data = []
     ) {
         parent::__construct($context, $data);
+    }
+
+    /**
+     * Format price
+     *
+     * @param float $amount
+     * @return string
+     */
+    public function formatPrice($amount)
+    {
+        return $this->priceCurrency->format($amount, false);
     }
 
     /**

@@ -38,8 +38,7 @@ $purchaseOrders = $block->getPurchaseOrders();
                             <?= $escaper->escapeHtml($po->getGrandTotal() > 0 ? __('Company Office') : '') ?>
                         </td>
                         <td data-th="<?= $escaper->escapeHtmlAttr(__('Order Total')) ?>" class="col total">
-                            <?php $priceHelper = $block->helper(\Magento\Framework\Pricing\Helper\Data::class); ?>
-                            <?= /* @noEscape */ $priceHelper->currency($po->getGrandTotal(), true, false) ?>
+                            <?= /* @noEscape */ $block->formatPrice($po->getGrandTotal()) ?>
                         </td>
                         <td data-th="<?= $escaper->escapeHtmlAttr(__('Status')) ?>" class="col status">
                             <?= $escaper->escapeHtml($block->getStatusLabel($po->getStatus())) ?>

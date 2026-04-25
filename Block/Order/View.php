@@ -35,6 +35,7 @@ class View extends Template
      * @param PurchaseOrderManagement $purchaseOrderManagement
      * @param Session $customerSession
      * @param CustomerRepositoryInterface $customerRepository
+     * @param \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency
      * @param array $data
      */
     public function __construct(
@@ -45,9 +46,21 @@ class View extends Template
         protected PurchaseOrderManagement $purchaseOrderManagement,
         protected Session $customerSession,
         protected CustomerRepositoryInterface $customerRepository,
+        protected \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency,
         array $data = []
     ) {
         parent::__construct($context, $data);
+    }
+
+    /**
+     * Format price
+     *
+     * @param float $amount
+     * @return string
+     */
+    public function formatPrice($amount)
+    {
+        return $this->priceCurrency->format($amount, false);
     }
 
     /**

@@ -13,7 +13,6 @@ $po = $block->getPurchaseOrder();
 $items = $block->getSnapshotItems();
 $totals = $block->getSnapshotTotals();
 $logs = $block->getActivityLog();
-$priceHelper = $block->helper(\Magento\Framework\Pricing\Helper\Data::class);
 ?>
 <?php if ($po): ?>
     <div class="order-details-items ordered">
@@ -42,13 +41,13 @@ $priceHelper = $block->helper(\Magento\Framework\Pricing\Helper\Data::class);
                                 <?= $escaper->escapeHtml($item['sku']) ?>
                             </td>
                             <td class="col price" data-th="<?= $escaper->escapeHtmlAttr(__('Price')) ?>">
-                                <?= /* @noEscape */ $priceHelper->currency($item['price'], true, false) ?>
+                                <?= /* @noEscape */ $block->formatPrice($item['price']) ?>
                             </td>
                             <td class="col qty" data-th="<?= $escaper->escapeHtmlAttr(__('Qty')) ?>">
                                 <?= (float)$item['qty'] ?>
                             </td>
                             <td class="col subtotal" data-th="<?= $escaper->escapeHtmlAttr(__('Subtotal')) ?>">
-                                <?= /* @noEscape */ $priceHelper->currency($item['row_total'], true, false) ?>
+                                <?= /* @noEscape */ $block->formatPrice($item['row_total']) ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -57,7 +56,7 @@ $priceHelper = $block->helper(\Magento\Framework\Pricing\Helper\Data::class);
                     <tr class="subtotal">
                         <th colspan="4" class="mark" scope="row"><?= $escaper->escapeHtml(__('Subtotal')) ?></th>
                         <td class="amount" data-th="<?= $escaper->escapeHtmlAttr(__('Subtotal')) ?>">
-                            <?= /* @noEscape */ $priceHelper->currency($totals['subtotal'], true, false) ?>
+                            <?= /* @noEscape */ $block->formatPrice($totals['subtotal']) ?>
                         </td>
                     </tr>
                     <tr class="shipping">
@@ -65,13 +64,13 @@ $priceHelper = $block->helper(\Magento\Framework\Pricing\Helper\Data::class);
                             <?= $escaper->escapeHtml(__('Shipping & Handling')) ?>
                         </th>
                         <td class="amount" data-th="<?= $escaper->escapeHtmlAttr(__('Shipping & Handling')) ?>">
-                            <?= /* @noEscape */ $priceHelper->currency($totals['shipping_amount'], true, false) ?>
+                            <?= /* @noEscape */ $block->formatPrice($totals['shipping_amount']) ?>
                         </td>
                     </tr>
                     <tr class="tax">
                         <th colspan="4" class="mark" scope="row"><?= $escaper->escapeHtml(__('Tax')) ?></th>
                         <td class="amount" data-th="<?= $escaper->escapeHtmlAttr(__('Tax')) ?>">
-                            <?= /* @noEscape */ $priceHelper->currency($totals['tax_amount'], true, false) ?>
+                            <?= /* @noEscape */ $block->formatPrice($totals['tax_amount']) ?>
                         </td>
                     </tr>
                     <tr class="grand_total">
@@ -80,7 +79,7 @@ $priceHelper = $block->helper(\Magento\Framework\Pricing\Helper\Data::class);
                         </th>
                         <td class="amount" data-th="<?= $escaper->escapeHtmlAttr(__('Grand Total')) ?>">
                             <strong>
-                                <?= /* @noEscape */ $priceHelper->currency($totals['grand_total'], true, false) ?>
+                                <?= /* @noEscape */ $block->formatPrice($totals['grand_total']) ?>
                             </strong>
                         </td>
                     </tr>

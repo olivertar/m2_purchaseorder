@@ -27,15 +27,28 @@ class ListOrder extends Template
      * @param Context $context
      * @param CollectionFactory $collectionFactory
      * @param Session $customerSession
+     * @param \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency
      * @param array $data
      */
     public function __construct(
         Context $context,
         protected CollectionFactory $collectionFactory,
         protected Session $customerSession,
+        protected \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency,
         array $data = []
     ) {
         parent::__construct($context, $data);
+    }
+
+    /**
+     * Format price
+     *
+     * @param float $amount
+     * @return string
+     */
+    public function formatPrice($amount)
+    {
+        return $this->priceCurrency->format($amount, false);
     }
 
     /**
