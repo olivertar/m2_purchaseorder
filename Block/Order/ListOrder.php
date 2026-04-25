@@ -15,21 +15,14 @@ namespace Orangecat\PurchaseOrder\Block\Order;
 use Magento\Customer\Model\Session;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
-use Orangecat\PurchaseOrder\Model\ResourceModel\PurchaseOrder\CollectionFactory;
 use Orangecat\PurchaseOrder\Api\Data\PurchaseOrderInterface;
+use Orangecat\PurchaseOrder\Model\ResourceModel\PurchaseOrder\CollectionFactory;
 
+/**
+ * Block for displaying the customer's own purchase orders.
+ */
 class ListOrder extends Template
 {
-    /**
-     * @var CollectionFactory
-     */
-    protected $collectionFactory;
-
-    /**
-     * @var Session
-     */
-    protected $customerSession;
-
     /**
      * @param Context $context
      * @param CollectionFactory $collectionFactory
@@ -38,12 +31,10 @@ class ListOrder extends Template
      */
     public function __construct(
         Context $context,
-        CollectionFactory $collectionFactory,
-        Session $customerSession,
+        protected CollectionFactory $collectionFactory,
+        protected Session $customerSession,
         array $data = []
     ) {
-        $this->collectionFactory = $collectionFactory;
-        $this->customerSession = $customerSession;
         parent::__construct($context, $data);
     }
 
@@ -67,7 +58,7 @@ class ListOrder extends Template
      * @param PurchaseOrderInterface $purchaseOrder
      * @return string
      */
-    public function getViewUrl($purchaseOrder)
+    public function getViewUrl(PurchaseOrderInterface $purchaseOrder): string
     {
         return $this->getUrl('purchaseorder/order/view', ['id' => $purchaseOrder->getId()]);
     }

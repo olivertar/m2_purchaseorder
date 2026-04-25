@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Orangecat\PurchaseOrder\Block\Account\Navigation;
 
 use Magento\Framework\View\Element\Template\Context;
@@ -16,22 +18,8 @@ use Magento\Customer\Model\Session as CustomerSession;
 use Orangecat\Company\Api\CompanyManagementInterface;
 use Orangecat\Company\Api\Data\RoleInterface;
 
-/**
- * Class Link
- * @package Orangecat\PurchaseOrder\Block\Account\Navigation
- */
 class Link extends \Magento\Framework\View\Element\Html\Link\Current
 {
-    /**
-     * @var CustomerSession
-     */
-    protected $customerSession;
-
-    /**
-     * @var CompanyManagementInterface
-     */
-    protected $companyManagement;
-
     /**
      * Link constructor.
      * @param Context $context
@@ -43,16 +31,16 @@ class Link extends \Magento\Framework\View\Element\Html\Link\Current
     public function __construct(
         Context $context,
         DefaultPathInterface $defaultPath,
-        CustomerSession $customerSession,
-        CompanyManagementInterface $companyManagement,
+        protected CustomerSession $customerSession,
+        protected CompanyManagementInterface $companyManagement,
         array $data = []
     ) {
-        $this->customerSession = $customerSession;
-        $this->companyManagement = $companyManagement;
         parent::__construct($context, $defaultPath, $data);
     }
 
     /**
+     * Render link.
+     *
      * @return string
      */
     protected function _toHtml()

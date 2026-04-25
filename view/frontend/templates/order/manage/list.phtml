@@ -15,41 +15,61 @@ $purchaseOrders = $block->getPurchaseOrders();
     <div class="table-wrapper orders-history company-orders">
         <?php if ($purchaseOrders && count($purchaseOrders)): ?>
             <table class="data table table-order-items history" id="company-purchase-orders-table">
-                <caption class="table-caption"><?= $block->escapeHtml(__('Manage Company Purchase Orders')) ?></caption>
+                <caption class="table-caption">
+                    <?= $escaper->escapeHtml(__('Manage Company Purchase Orders')) ?>
+                </caption>
                 <thead>
                     <tr>
-                        <th scope="col" class="col id"><?= $block->escapeHtml(__('PO #')) ?></th>
-                        <th scope="col" class="col date"><?= $block->escapeHtml(__('Date')) ?></th>
-                        <th scope="col" class="col creator"><?= $block->escapeHtml(__('Buyer')) ?></th>
-                        <th scope="col" class="col total"><?= $block->escapeHtml(__('Order Total')) ?></th>
-                        <th scope="col" class="col status"><?= $block->escapeHtml(__('Status')) ?></th>
-                        <th scope="col" class="col actions"><?= $block->escapeHtml(__('Action')) ?></th>
+                        <th scope="col" class="col id"><?= $escaper->escapeHtml(__('PO #')) ?></th>
+                        <th scope="col" class="col date"><?= $escaper->escapeHtml(__('Date')) ?></th>
+                        <th scope="col" class="col creator"><?= $escaper->escapeHtml(__('Buyer')) ?></th>
+                        <th scope="col" class="col total"><?= $escaper->escapeHtml(__('Order Total')) ?></th>
+                        <th scope="col" class="col status"><?= $escaper->escapeHtml(__('Status')) ?></th>
+                        <th scope="col" class="col actions"><?= $escaper->escapeHtml(__('Action')) ?></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($purchaseOrders as $po): ?>
                         <tr>
-                            <td data-th="<?= $block->escapeHtml(__('PO #')) ?>" class="col id"><?= $block->escapeHtml($po->getIncrementId()) ?></td>
-                            <td data-th="<?= $block->escapeHtml(__('Date')) ?>" class="col date"><?= $block->escapeHtml($po->getCreatedAt()) ?></td>
-                            <td data-th="<?= $block->escapeHtml(__('Buyer')) ?>" class="col creator"><?= $block->escapeHtml($block->getCreatorName($po)) ?></td>
-                            <td data-th="<?= $block->escapeHtml(__('Order Total')) ?>" class="col total"><?= /* @noEscape */ $block->escapeHtml($this->helper(\Magento\Framework\Pricing\Helper\Data::class)->currency($po->getGrandTotal(), true, false)) ?></td>
-                            <td data-th="<?= $block->escapeHtml(__('Status')) ?>" class="col status"><?= $block->escapeHtml($block->getStatusLabel($po->getStatus())) ?></td>
-                            <td data-th="<?= $block->escapeHtml(__('Action')) ?>" class="col actions">
-                                <a href="<?= $block->escapeUrl($block->getUrl('purchaseorder/order/view', ['id' => $po->getId()])) ?>" class="action view">
-                                    <span><?= $block->escapeHtml(__('View')) ?></span>
+                            <td data-th="<?= $escaper->escapeHtmlAttr(__('PO #')) ?>" class="col id">
+                                <?= $escaper->escapeHtml($po->getIncrementId()) ?>
+                            </td>
+                            <td data-th="<?= $escaper->escapeHtmlAttr(__('Date')) ?>" class="col date">
+                                <?= $escaper->escapeHtml($po->getCreatedAt()) ?>
+                            </td>
+                            <td data-th="<?= $escaper->escapeHtmlAttr(__('Buyer')) ?>" class="col creator">
+                                <?= $escaper->escapeHtml($block->getCreatorName($po)) ?>
+                            </td>
+                            <td data-th="<?= $escaper->escapeHtmlAttr(__('Order Total')) ?>" class="col total">
+                                <?php $priceHelper = $block->helper(\Magento\Framework\Pricing\Helper\Data::class); ?>
+                                <?= /* @noEscape */ $priceHelper->currency($po->getGrandTotal(), true, false) ?>
+                            </td>
+                            <td data-th="<?= $escaper->escapeHtmlAttr(__('Status')) ?>" class="col status">
+                                <?= $escaper->escapeHtml($block->getStatusLabel($po->getStatus())) ?>
+                            </td>
+                            <td data-th="<?= $escaper->escapeHtmlAttr(__('Action')) ?>" class="col actions">
+                                <a href="<?= $escaper->escapeUrl($block->getViewUrlForAdmin($po)) ?>" 
+                                   class="action view">
+                                    <span><?= $escaper->escapeHtml(__('View')) ?></span>
                                 </a>
-                                <?php if ($po->getStatus() === \Orangecat\PurchaseOrder\Api\Data\PurchaseOrderInterface::STATUS_PENDING_APPROVAL): ?>
-                                    <form action="<?= $block->escapeUrl($block->getApproveUrl($po)) ?>" method="post" style="display:inline-block">
+                                <?php $pending = \Orangecat\PurchaseOrder\Api\Data\PurchaseOrderInterface::
+                                    STATUS_PENDING_APPROVAL; ?>
+                                <?php if ($po->getStatus() === $pending): ?>
+                                    <form action="<?= $escaper->escapeUrl($block->getApproveUrl($po)) ?>" 
+                                          method="post" 
+                                          style="display:inline-block">
                                         <?= $block->getBlockHtml('formkey') ?>
-                                        <button type="submit" class="action primary action-approve" title="<?= $block->escapeHtml(__('Approve')) ?>">
-                                            <span><?= $block->escapeHtml(__('Approve')) ?></span>
+                                        <button type="submit" 
+                                                class="action primary action-approve" 
+                                                title="<?= $escaper->escapeHtmlAttr(__('Approve')) ?>">
+                                            <span><?= $escaper->escapeHtml(__('Approve')) ?></span>
                                         </button>
                                     </form>
-                                    <button type="button" class="action secondary action-reject" title="<?= $block->escapeHtml(__('Reject')) ?>" 
-                                            data-url="<?= $block->escapeUrl($block->getRejectUrl($po)) ?>"
-                                            data-id="<?= $block->escapeHtml($po->getIncrementId()) ?>"
-                                            data-form-key="<?= $block->getFormKey() ?>">
-                                        <span><?= $block->escapeHtml(__('Reject')) ?></span>
+                                    <button type="button" class="action secondary action-reject" 
+                                            title="<?= $escaper->escapeHtmlAttr(__('Reject')) ?>" 
+                                            data-id="<?= (int)$po->getId() ?>"
+                                            data-increment-id="<?= $escaper->escapeHtmlAttr($po->getIncrementId()) ?>">
+                                        <span><?= $escaper->escapeHtml(__('Reject')) ?></span>
                                     </button>
                                 <?php endif; ?>
                             </td>
@@ -58,14 +78,33 @@ $purchaseOrders = $block->getPurchaseOrders();
                 </tbody>
             </table>
         <?php else: ?>
-            <div class="message info empty"><span><?= $block->escapeHtml(__('There are no company purchase orders to manage.')) ?></span></div>
+            <div class="message info empty">
+                <span><?= $escaper->escapeHtml(__('You have no company purchase orders to manage.')) ?></span>
+            </div>
         <?php endif; ?>
     </div>
-</div>
-<div class="actions-toolbar">
-    <div class="secondary">
-        <a class="action back" href="<?= $block->escapeUrl($block->getUrl('customer/account')) ?>">
-            <span><?= $block->escapeHtml(__('Back')) ?></span>
-        </a>
+    <div class="actions-toolbar">
+        <div class="secondary">
+            <a class="action back" href="<?= $escaper->escapeUrl($block->getUrl('customer/account')) ?>">
+                <span><?= $escaper->escapeHtml(__('Back')) ?></span>
+            </a>
+        </div>
     </div>
+</div>
+
+<div id="reject-po-modal" style="display:none">
+    <form id="reject-po-form" 
+          action="<?= $escaper->escapeUrl($block->getUrl('purchaseorder/order_manage/reject')) ?>" 
+          method="post">
+        <?= $block->getBlockHtml('formkey') ?>
+        <input type="hidden" name="id" id="reject-po-id" value="">
+        <div class="field comment">
+            <label class="label" for="comment">
+                <span><?= $escaper->escapeHtml(__('Reason for rejection')) ?></span>
+            </label>
+            <div class="control">
+                <textarea name="comment" id="comment" class="input-text" rows="3"></textarea>
+            </div>
+        </div>
+    </form>
 </div>

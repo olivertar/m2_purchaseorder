@@ -9,20 +9,22 @@
  */
 
 /** @var \Magento\Framework\View\Element\Template $block */
-/** @var \Magento\Checkout\Model\Session $checkoutSession */
-$checkoutSession = \Magento\Framework\App\ObjectManager::getInstance()->get(\Magento\Checkout\Model\Session::class);
-$poId = $checkoutSession->getData('last_purchase_order_id');
-$poIncrementId = $checkoutSession->getData('last_purchase_order_increment_id');
+/** @var \Orangecat\PurchaseOrder\ViewModel\Checkout\Success $viewModel */
+$viewModel = $block->getViewModel();
+$poId = $viewModel->getPurchaseOrderId();
+$poIncrementId = $viewModel->getPurchaseOrderIncrementId();
 ?>
 <?php if ($poId): ?>
     <div class="checkout-success">
         <h1 class="page-title">
-            <span class="base" data-ui-id="page-title-wrapper"><?= $block->escapeHtml(__('Your purchase order has been received.')) ?></span>
+            <span class="base" data-ui-id="page-title-wrapper">
+                <?= $escaper->escapeHtml(__('Your purchase order has been received.')) ?>
+            </span>
         </h1>
         <div class="message success">
-            <div><?= $block->escapeHtml(__('Your purchase order number is: %1.', $poIncrementId)) ?></div>
-            <div><?= $block->escapeHtml(__('It is currently pending approval.')) ?></div>
+            <div><?= $escaper->escapeHtml(__('Your purchase order number is: %1.', $poIncrementId)) ?></div>
+            <div><?= $escaper->escapeHtml(__('It is currently pending approval.')) ?></div>
         </div>
-        <p><?= $block->escapeHtml(__('We\'ll email you a confirmation when your order is approved.')) ?></p>
+        <p><?= $escaper->escapeHtml(__('We\'ll email you a confirmation when your order is approved.')) ?></p>
     </div>
 <?php endif; ?>

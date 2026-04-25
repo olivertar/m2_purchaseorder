@@ -28,26 +28,27 @@ use Orangecat\PurchaseOrder\Api\Data\PurchaseOrderInterface;
 class PurchaseOrderCreatedException extends LocalizedException
 {
     /**
-     * @var PurchaseOrderInterface
-     */
-    private PurchaseOrderInterface $purchaseOrder;
-
-    /**
-     * @param PurchaseOrderInterface $purchaseOrder  The newly created PO.
-     * @param \Magento\Framework\Phrase|null $phrase Optional message for the parent.
+     * Constructor.
+     *
+     * @param PurchaseOrderInterface $purchaseOrder
+     * @param \Magento\Framework\Phrase|null $phrase
      */
     public function __construct(
-        PurchaseOrderInterface $purchaseOrder,
+        private PurchaseOrderInterface $purchaseOrder,
         ?\Magento\Framework\Phrase $phrase = null
     ) {
-        $this->purchaseOrder = $purchaseOrder;
 
         parent::__construct(
-            $phrase ?? __('Your order has been submitted as Purchase Order %1 and is pending approval.', $purchaseOrder->getIncrementId())
+            $phrase ?? __(
+                'Your order has been submitted as Purchase Order %1 and is pending approval.',
+                $purchaseOrder->getIncrementId()
+            )
         );
     }
 
     /**
+     * Get purchase order.
+     *
      * @return PurchaseOrderInterface
      */
     public function getPurchaseOrder(): PurchaseOrderInterface

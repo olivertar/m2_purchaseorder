@@ -12,64 +12,38 @@ declare(strict_types=1);
 
 namespace Orangecat\PurchaseOrder\Block\Order\Manage;
 
+use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\Session;
+use Magento\Framework\Data\Form\FormKey;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
-use Orangecat\PurchaseOrder\Model\ResourceModel\PurchaseOrder\CollectionFactory;
-use Orangecat\PurchaseOrder\Api\Data\PurchaseOrderInterface;
 use Orangecat\Company\Api\CompanyManagementInterface;
-use Magento\Customer\Api\CustomerRepositoryInterface;
+use Orangecat\PurchaseOrder\Api\Data\PurchaseOrderInterface;
+use Orangecat\PurchaseOrder\Model\ResourceModel\PurchaseOrder\CollectionFactory;
 
+/**
+ * Block for managing company purchase orders list.
+ */
 class ListOrder extends Template
 {
-    /**
-     * @var CollectionFactory
-     */
-    protected $collectionFactory;
-
-    /**
-     * @var Session
-     */
-    protected $customerSession;
-
-    /**
-     * @var CompanyManagementInterface
-     */
-    protected $companyManagement;
-
-    /**
-     * @var \Magento\Framework\Data\Form\FormKey
-     */
-    protected $formKey;
-
-    /**
-     * @var CustomerRepositoryInterface
-     */
-    protected $customerRepository;
-
     /**
      * @param Context $context
      * @param CollectionFactory $collectionFactory
      * @param Session $customerSession
      * @param CompanyManagementInterface $companyManagement
-     * @param \Magento\Framework\Data\Form\FormKey $formKey
+     * @param FormKey $formKey
      * @param CustomerRepositoryInterface $customerRepository
      * @param array $data
      */
     public function __construct(
         Context $context,
-        CollectionFactory $collectionFactory,
-        Session $customerSession,
-        CompanyManagementInterface $companyManagement,
-        \Magento\Framework\Data\Form\FormKey $formKey,
-        CustomerRepositoryInterface $customerRepository,
+        protected CollectionFactory $collectionFactory,
+        protected Session $customerSession,
+        protected CompanyManagementInterface $companyManagement,
+        protected FormKey $formKey,
+        protected CustomerRepositoryInterface $customerRepository,
         array $data = []
     ) {
-        $this->collectionFactory = $collectionFactory;
-        $this->customerSession = $customerSession;
-        $this->companyManagement = $companyManagement;
-        $this->formKey = $formKey;
-        $this->customerRepository = $customerRepository;
         parent::__construct($context, $data);
     }
 
@@ -82,7 +56,7 @@ class ListOrder extends Template
     {
         $customerId = $this->customerSession->getCustomerId();
         $companyId = $this->companyManagement->getCompanyIdByCustomerId($customerId);
-        
+
         $collection = $this->collectionFactory->create();
         if ($companyId) {
             $collection->addFieldToFilter(PurchaseOrderInterface::COMPANY_ID, $companyId);
@@ -92,12 +66,23 @@ class ListOrder extends Template
     }
 
     /**
+     * Get view URL for admin/manager
+     *
+     * @param PurchaseOrderInterface $purchaseOrder
+     * @return string
+     */
+    public function getViewUrlForAdmin(PurchaseOrderInterface $purchaseOrder): string
+    {
+        return $this->getUrl('purchaseorder/order/view', ['id' => $purchaseOrder->getId()]);
+    }
+
+    /**
      * Get approve URL
      *
      * @param PurchaseOrderInterface $purchaseOrder
      * @return string
      */
-    public function getApproveUrl($purchaseOrder)
+    public function getApproveUrl(PurchaseOrderInterface $purchaseOrder): string
     {
         return $this->getUrl('purchaseorder/order_manage/approve', ['id' => $purchaseOrder->getId()]);
     }
@@ -108,7 +93,7 @@ class ListOrder extends Template
      * @param PurchaseOrderInterface $purchaseOrder
      * @return string
      */
-    public function getRejectUrl($purchaseOrder)
+    public function getRejectUrl(PurchaseOrderInterface $purchaseOrder): string
     {
         return $this->getUrl('purchaseorder/order_manage/reject', ['id' => $purchaseOrder->getId()]);
     }
@@ -148,7 +133,7 @@ class ListOrder extends Template
      * @param PurchaseOrderInterface $po
      * @return string
      */
-    public function getCreatorName($po)
+    public function getCreatorName(PurchaseOrderInterface $po): string
     {
         $creatorId = $po->getCreatorId();
         if (!$creatorId) {
@@ -156,7 +141,7 @@ class ListOrder extends Template
         }
 
         try {
-            $customer = $this->customerRepository->getById($creatorId);
+            $customer = $this->customerRepository->getById((int)$creatorId);
             return $customer->getFirstname() . ' ' . $customer->getLastname();
         } catch (\Exception $e) {
             return (string)__('Unknown');

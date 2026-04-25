@@ -25,26 +25,6 @@ use Orangecat\Company\Api\Data\RoleInterface;
 class View extends Action implements HttpGetActionInterface
 {
     /**
-     * @var PageFactory
-     */
-    protected $resultPageFactory;
-
-    /**
-     * @var Session
-     */
-    protected $customerSession;
-
-    /**
-     * @var PurchaseOrderRepositoryInterface
-     */
-    protected $purchaseOrderRepository;
-
-    /**
-     * @var CompanyManagementInterface
-     */
-    protected $companyManagement;
-
-    /**
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param Session $customerSession
@@ -53,15 +33,11 @@ class View extends Action implements HttpGetActionInterface
      */
     public function __construct(
         Context $context,
-        PageFactory $resultPageFactory,
-        Session $customerSession,
-        PurchaseOrderRepositoryInterface $purchaseOrderRepository,
-        CompanyManagementInterface $companyManagement
+        protected PageFactory $resultPageFactory,
+        protected Session $customerSession,
+        protected PurchaseOrderRepositoryInterface $purchaseOrderRepository,
+        protected CompanyManagementInterface $companyManagement
     ) {
-        $this->resultPageFactory = $resultPageFactory;
-        $this->customerSession = $customerSession;
-        $this->purchaseOrderRepository = $purchaseOrderRepository;
-        $this->companyManagement = $companyManagement;
         parent::__construct($context);
     }
 
@@ -97,7 +73,9 @@ class View extends Action implements HttpGetActionInterface
             }
 
             if (!$isOwner && !$canManage) {
-                $this->messageManager->addErrorMessage(__('Access denied. You do not have permission to view this purchase order.'));
+                $this->messageManager->addErrorMessage(
+                    __('Access denied. You do not have permission to view this purchase order.')
+                );
                 return $this->_redirect('customer/account');
             }
 

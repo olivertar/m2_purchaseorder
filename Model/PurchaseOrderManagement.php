@@ -46,19 +46,20 @@ use Psr\Log\LoggerInterface;
 class PurchaseOrderManagement
 {
     /**
-     * @param PurchaseOrderRepositoryInterface    $purchaseOrderRepository
+     * @param PurchaseOrderRepositoryInterface $purchaseOrderRepository
      * @param PurchaseOrderLogRepositoryInterface $purchaseOrderLogRepository
-     * @param PurchaseOrderInterfaceFactory       $purchaseOrderFactory
-     * @param CompanyManagementInterface          $companyManagement
-     * @param RoleRepositoryInterface             $roleRepository
-     * @param CartRepositoryInterface             $cartRepository
-     * @param CartManagementInterface             $cartManagement
-     * @param StoreManagerInterface               $storeManager
-     * @param StockRegistryInterface              $stockRegistry
-     * @param OrderRepositoryInterface            $orderRepository
-     * @param Config                              $config
-     * @param LoggerInterface                     $logger
-     * @param Json                                $json
+     * @param PurchaseOrderInterfaceFactory $purchaseOrderFactory
+     * @param CompanyManagementInterface $companyManagement
+     * @param RoleRepositoryInterface $roleRepository
+     * @param CartRepositoryInterface $cartRepository
+     * @param CartManagementInterface $cartManagement
+     * @param StoreManagerInterface $storeManager
+     * @param StockRegistryInterface $stockRegistry
+     * @param OrderRepositoryInterface $orderRepository
+     * @param Config $config
+     * @param LoggerInterface $logger
+     * @param Json $json
+     * @param CheckoutState $checkoutState
      */
     public function __construct(
         private readonly PurchaseOrderRepositoryInterface    $purchaseOrderRepository,
@@ -88,9 +89,9 @@ class PurchaseOrderManagement
      * The source quote is deactivated after snapshot is taken so the buyer
      * cannot accidentally re-submit the same cart.
      *
-     * @param CartInterface $quote          The active cart being checked out.
-     * @param int           $customerId     The buyer creating the PO.
-     * @param string        $triggeredByRule Human-readable rule name for audit log.
+     * @param CartInterface $quote
+     * @param int $customerId
+     * @param string $triggeredByRule
      * @return PurchaseOrderInterface
      * @throws LocalizedException
      */

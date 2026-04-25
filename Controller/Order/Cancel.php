@@ -23,21 +23,6 @@ use Orangecat\PurchaseOrder\Model\PurchaseOrderManagement;
 class Cancel extends Action implements HttpPostActionInterface
 {
     /**
-     * @var Session
-     */
-    protected $customerSession;
-
-    /**
-     * @var PurchaseOrderManagement
-     */
-    protected $purchaseOrderManagement;
-
-    /**
-     * @var Validator
-     */
-    protected $formKeyValidator;
-
-    /**
      * @param Context $context
      * @param Session $customerSession
      * @param PurchaseOrderManagement $purchaseOrderManagement
@@ -45,13 +30,10 @@ class Cancel extends Action implements HttpPostActionInterface
      */
     public function __construct(
         Context $context,
-        Session $customerSession,
-        PurchaseOrderManagement $purchaseOrderManagement,
-        Validator $formKeyValidator
+        protected Session $customerSession,
+        protected PurchaseOrderManagement $purchaseOrderManagement,
+        protected Validator $formKeyValidator
     ) {
-        $this->customerSession = $customerSession;
-        $this->purchaseOrderManagement = $purchaseOrderManagement;
-        $this->formKeyValidator = $formKeyValidator;
         parent::__construct($context);
     }
 

@@ -130,8 +130,9 @@ class MaxPeriodAmountRule implements ApprovalRuleInterface
     }
 
     /**
-     * Calculate the total committed spend for this buyer in the current
-     * calendar month (from the 1st of the month at 00:00:00 UTC until now).
+     * Calculate the total committed spend for this buyer in the current calendar month.
+     *
+     * From the 1st of the month at 00:00:00 UTC until now.
      *
      * Uses a raw SQL aggregate for performance — avoids loading a full
      * collection into memory when only a SUM is needed.

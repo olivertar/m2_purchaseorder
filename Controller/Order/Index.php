@@ -21,27 +21,15 @@ use Magento\Framework\View\Result\PageFactory;
 class Index extends Action implements HttpGetActionInterface
 {
     /**
-     * @var PageFactory
-     */
-    protected $resultPageFactory;
-
-    /**
-     * @var Session
-     */
-    protected $customerSession;
-
-    /**
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param Session $customerSession
      */
     public function __construct(
         Context $context,
-        PageFactory $resultPageFactory,
-        Session $customerSession
+        protected PageFactory $resultPageFactory,
+        protected Session $customerSession
     ) {
-        $this->resultPageFactory = $resultPageFactory;
-        $this->customerSession = $customerSession;
         parent::__construct($context);
     }
 

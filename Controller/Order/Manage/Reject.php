@@ -25,26 +25,6 @@ use Orangecat\Company\Api\Data\RoleInterface;
 class Reject extends Action implements HttpPostActionInterface
 {
     /**
-     * @var Session
-     */
-    protected $customerSession;
-
-    /**
-     * @var PurchaseOrderManagement
-     */
-    protected $purchaseOrderManagement;
-
-    /**
-     * @var Validator
-     */
-    protected $formKeyValidator;
-
-    /**
-     * @var CompanyManagementInterface
-     */
-    protected $companyManagement;
-
-    /**
      * @param Context $context
      * @param Session $customerSession
      * @param PurchaseOrderManagement $purchaseOrderManagement
@@ -53,15 +33,11 @@ class Reject extends Action implements HttpPostActionInterface
      */
     public function __construct(
         Context $context,
-        Session $customerSession,
-        PurchaseOrderManagement $purchaseOrderManagement,
-        Validator $formKeyValidator,
-        CompanyManagementInterface $companyManagement
+        protected Session $customerSession,
+        protected PurchaseOrderManagement $purchaseOrderManagement,
+        protected Validator $formKeyValidator,
+        protected CompanyManagementInterface $companyManagement
     ) {
-        $this->customerSession = $customerSession;
-        $this->purchaseOrderManagement = $purchaseOrderManagement;
-        $this->formKeyValidator = $formKeyValidator;
-        $this->companyManagement = $companyManagement;
         parent::__construct($context);
     }
 
@@ -80,7 +56,9 @@ class Reject extends Action implements HttpPostActionInterface
         $roleId = (int)$this->companyManagement->getRoleIdByCustomerId($customerId);
 
         if ($roleId !== RoleInterface::ADMIN_ROLE_ID && $roleId !== RoleInterface::MANAGER_ROLE_ID) {
-            $this->messageManager->addErrorMessage(__('Access denied. You do not have permission to reject company purchase orders.'));
+            $this->messageManager->addErrorMessage(
+                __('Access denied. You do not have permission to reject company purchase orders.')
+            );
             return $this->_redirect('customer/account');
         }
 

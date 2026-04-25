@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Orangecat\PurchaseOrder\Model;
 
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
@@ -25,31 +27,6 @@ use Orangecat\PurchaseOrder\Model\ResourceModel\PurchaseOrderLog\CollectionFacto
 class PurchaseOrderLogRepository implements PurchaseOrderLogRepositoryInterface
 {
     /**
-     * @var PurchaseOrderLogResource
-     */
-    protected $resource;
-
-    /**
-     * @var PurchaseOrderLogInterfaceFactory
-     */
-    protected $purchaseOrderLogFactory;
-
-    /**
-     * @var PurchaseOrderLogCollectionFactory
-     */
-    protected $purchaseOrderLogCollectionFactory;
-
-    /**
-     * @var PurchaseOrderLogSearchResultsInterfaceFactory
-     */
-    protected $searchResultsFactory;
-
-    /**
-     * @var CollectionProcessorInterface
-     */
-    protected $collectionProcessor;
-
-    /**
      * @param PurchaseOrderLogResource $resource
      * @param PurchaseOrderLogInterfaceFactory $purchaseOrderLogFactory
      * @param PurchaseOrderLogCollectionFactory $purchaseOrderLogCollectionFactory
@@ -57,17 +34,12 @@ class PurchaseOrderLogRepository implements PurchaseOrderLogRepositoryInterface
      * @param CollectionProcessorInterface $collectionProcessor
      */
     public function __construct(
-        PurchaseOrderLogResource $resource,
-        PurchaseOrderLogInterfaceFactory $purchaseOrderLogFactory,
-        PurchaseOrderLogCollectionFactory $purchaseOrderLogCollectionFactory,
-        PurchaseOrderLogSearchResultsInterfaceFactory $searchResultsFactory,
-        CollectionProcessorInterface $collectionProcessor
+        protected PurchaseOrderLogResource $resource,
+        protected PurchaseOrderLogInterfaceFactory $purchaseOrderLogFactory,
+        protected PurchaseOrderLogCollectionFactory $purchaseOrderLogCollectionFactory,
+        protected PurchaseOrderLogSearchResultsInterfaceFactory $searchResultsFactory,
+        protected CollectionProcessorInterface $collectionProcessor
     ) {
-        $this->resource = $resource;
-        $this->purchaseOrderLogFactory = $purchaseOrderLogFactory;
-        $this->purchaseOrderLogCollectionFactory = $purchaseOrderLogCollectionFactory;
-        $this->searchResultsFactory = $searchResultsFactory;
-        $this->collectionProcessor = $collectionProcessor;
     }
 
     /**

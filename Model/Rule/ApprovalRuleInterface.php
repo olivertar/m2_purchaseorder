@@ -34,8 +34,8 @@ interface ApprovalRuleInterface
      * Return true  → this rule blocks direct checkout; a PO must be created.
      * Return false → this rule has no objection; other rules may still block.
      *
-     * @param CartInterface $quote     The active shopping cart being checked out.
-     * @param int           $customerId The ID of the customer placing the order.
+     * @param CartInterface $quote
+     * @param int $customerId
      * @return bool
      */
     public function needsApproval(CartInterface $quote, int $customerId): bool;

@@ -12,48 +12,21 @@ declare(strict_types=1);
 
 namespace Orangecat\PurchaseOrder\Block\Order;
 
+use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\Session;
+use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
-use Magento\Framework\Serialize\Serializer\Json;
-use Orangecat\PurchaseOrder\Api\PurchaseOrderRepositoryInterface;
-use Orangecat\PurchaseOrder\Model\ResourceModel\PurchaseOrderLog\CollectionFactory as LogCollectionFactory;
 use Orangecat\PurchaseOrder\Api\Data\PurchaseOrderInterface;
+use Orangecat\PurchaseOrder\Api\PurchaseOrderRepositoryInterface;
 use Orangecat\PurchaseOrder\Model\PurchaseOrderManagement;
-use Magento\Customer\Api\CustomerRepositoryInterface;
+use Orangecat\PurchaseOrder\Model\ResourceModel\PurchaseOrderLog\CollectionFactory as LogCollectionFactory;
 
+/**
+ * Block for viewing a single purchase order.
+ */
 class View extends Template
 {
-    /**
-     * @var PurchaseOrderRepositoryInterface
-     */
-    protected $purchaseOrderRepository;
-
-    /**
-     * @var LogCollectionFactory
-     */
-    protected $logCollectionFactory;
-
-    /**
-     * @var Json
-     */
-    protected $json;
-
-    /**
-     * @var PurchaseOrderManagement
-     */
-    protected $purchaseOrderManagement;
-
-    /**
-     * @var Session
-     */
-    protected $customerSession;
-
-    /**
-     * @var CustomerRepositoryInterface
-     */
-    protected $customerRepository;
-
     /**
      * @param Context $context
      * @param PurchaseOrderRepositoryInterface $purchaseOrderRepository
@@ -66,20 +39,14 @@ class View extends Template
      */
     public function __construct(
         Context $context,
-        PurchaseOrderRepositoryInterface $purchaseOrderRepository,
-        LogCollectionFactory $logCollectionFactory,
-        Json $json,
-        PurchaseOrderManagement $purchaseOrderManagement,
-        Session $customerSession,
-        CustomerRepositoryInterface $customerRepository,
+        protected PurchaseOrderRepositoryInterface $purchaseOrderRepository,
+        protected LogCollectionFactory $logCollectionFactory,
+        protected Json $json,
+        protected PurchaseOrderManagement $purchaseOrderManagement,
+        protected Session $customerSession,
+        protected CustomerRepositoryInterface $customerRepository,
         array $data = []
     ) {
-        $this->purchaseOrderRepository = $purchaseOrderRepository;
-        $this->logCollectionFactory = $logCollectionFactory;
-        $this->json = $json;
-        $this->purchaseOrderManagement = $purchaseOrderManagement;
-        $this->customerSession = $customerSession;
-        $this->customerRepository = $customerRepository;
         parent::__construct($context, $data);
     }
 
@@ -92,7 +59,7 @@ class View extends Template
     {
         $id = $this->getRequest()->getParam('id');
         try {
-            return $this->purchaseOrderRepository->getById($id);
+            return $this->purchaseOrderRepository->getById((int)$id);
         } catch (\Exception $e) {
             return null;
         }
@@ -184,7 +151,8 @@ class View extends Template
      */
     public function getCancelUrl()
     {
-        return $this->getUrl('purchaseorder/order/cancel', ['id' => $this->getPurchaseOrder()->getId()]);
+        $po = $this->getPurchaseOrder();
+        return $po ? $this->getUrl('purchaseorder/order/cancel', ['id' => $po->getId()]) : '';
     }
 
     /**
@@ -193,7 +161,7 @@ class View extends Template
      * @param PurchaseOrderInterface $po
      * @return string
      */
-    public function getCreatorName($po)
+    public function getCreatorName(PurchaseOrderInterface $po): string
     {
         $creatorId = $po->getCreatorId();
         if (!$creatorId) {
@@ -201,7 +169,7 @@ class View extends Template
         }
 
         try {
-            $customer = $this->customerRepository->getById($creatorId);
+            $customer = $this->customerRepository->getById((int)$creatorId);
             return $customer->getFirstname() . ' ' . $customer->getLastname();
         } catch (\Exception $e) {
             return (string)__('Unknown');

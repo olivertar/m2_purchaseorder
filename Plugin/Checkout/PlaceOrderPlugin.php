@@ -45,13 +45,15 @@ use Psr\Log\LoggerInterface;
 class PlaceOrderPlugin
 {
     /**
-     * @param CartRepositoryInterface    $cartRepository
+     * @param CartRepositoryInterface $cartRepository
      * @param CompanyManagementInterface $companyManagement
-     * @param RoleRepositoryInterface    $roleRepository
-     * @param ApprovalRuleChain          $approvalRuleChain
-     * @param PurchaseOrderManagement    $purchaseOrderManagement
-     * @param Config                     $config
-     * @param LoggerInterface            $logger
+     * @param RoleRepositoryInterface $roleRepository
+     * @param ApprovalRuleChain $approvalRuleChain
+     * @param PurchaseOrderManagement $purchaseOrderManagement
+     * @param Config $config
+     * @param LoggerInterface $logger
+     * @param \Magento\Checkout\Model\Session $checkoutSession
+     * @param \Orangecat\PurchaseOrder\Model\CheckoutState $checkoutState
      */
     public function __construct(
         private readonly CartRepositoryInterface    $cartRepository,
@@ -71,7 +73,7 @@ class PlaceOrderPlugin
      *
      * @param mixed $subject
      * @param callable $proceed
-     * @param mixed ...$args
+     * @param mixed $args
      * @return mixed  Order ID.
      * @throws PurchaseOrderCreatedException When a PO is successfully created.
      * @throws LocalizedException            On unexpected errors.

@@ -8,18 +8,27 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Orangecat\PurchaseOrder\Api\Data;
 
 use Magento\Framework\Api\SearchResultsInterface;
 
+/**
+ * Interface PurchaseOrderLogSearchResultsInterface
+ */
 interface PurchaseOrderLogSearchResultsInterface extends SearchResultsInterface
 {
     /**
+     * Get purchase order logs list.
+     *
      * @return \Orangecat\PurchaseOrder\Api\Data\PurchaseOrderLogInterface[]
      */
     public function getItems();
 
     /**
+     * Set purchase order logs list.
+     *
      * @param \Orangecat\PurchaseOrder\Api\Data\PurchaseOrderLogInterface[] $items
      * @return $this
      */

@@ -8,11 +8,18 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Orangecat\PurchaseOrder\Api;
 
+/**
+ * Interface PurchaseOrderLogRepositoryInterface
+ */
 interface PurchaseOrderLogRepositoryInterface
 {
     /**
+     * Save purchase order log.
+     *
      * @param \Orangecat\PurchaseOrder\Api\Data\PurchaseOrderLogInterface $purchaseOrderLog
      * @return \Orangecat\PurchaseOrder\Api\Data\PurchaseOrderLogInterface
      * @throws \Magento\Framework\Exception\LocalizedException
@@ -20,6 +27,8 @@ interface PurchaseOrderLogRepositoryInterface
     public function save(\Orangecat\PurchaseOrder\Api\Data\PurchaseOrderLogInterface $purchaseOrderLog);
 
     /**
+     * Get purchase order log by ID.
+     *
      * @param int $id
      * @return \Orangecat\PurchaseOrder\Api\Data\PurchaseOrderLogInterface
      * @throws \Magento\Framework\Exception\NoSuchEntityException
@@ -27,12 +36,16 @@ interface PurchaseOrderLogRepositoryInterface
     public function getById($id);
 
     /**
+     * Get purchase order log list.
+     *
      * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
      * @return \Orangecat\PurchaseOrder\Api\Data\PurchaseOrderLogSearchResultsInterface
      */
     public function getList(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria);
 
     /**
+     * Create a new log entry.
+     *
      * @param int $poId
      * @param string $action
      * @param int|null $actorId

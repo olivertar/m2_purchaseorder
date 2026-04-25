@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Orangecat\PurchaseOrder\Model;
 
 use Magento\Framework\Model\AbstractExtensibleModel;
@@ -17,6 +19,8 @@ use Orangecat\PurchaseOrder\Model\ResourceModel\PurchaseOrderLog as PurchaseOrde
 class PurchaseOrderLog extends AbstractExtensibleModel implements PurchaseOrderLogInterface
 {
     /**
+     * Internal constructor.
+     *
      * @return void
      */
     protected function _construct()

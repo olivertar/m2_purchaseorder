@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Orangecat\PurchaseOrder\Model;
 
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
@@ -25,31 +27,6 @@ use Orangecat\PurchaseOrder\Model\ResourceModel\PurchaseOrder\CollectionFactory 
 class PurchaseOrderRepository implements PurchaseOrderRepositoryInterface
 {
     /**
-     * @var PurchaseOrderResource
-     */
-    protected $resource;
-
-    /**
-     * @var PurchaseOrderInterfaceFactory
-     */
-    protected $purchaseOrderFactory;
-
-    /**
-     * @var PurchaseOrderCollectionFactory
-     */
-    protected $purchaseOrderCollectionFactory;
-
-    /**
-     * @var PurchaseOrderSearchResultsInterfaceFactory
-     */
-    protected $searchResultsFactory;
-
-    /**
-     * @var CollectionProcessorInterface
-     */
-    protected $collectionProcessor;
-
-    /**
      * @param PurchaseOrderResource $resource
      * @param PurchaseOrderInterfaceFactory $purchaseOrderFactory
      * @param PurchaseOrderCollectionFactory $purchaseOrderCollectionFactory
@@ -57,17 +34,12 @@ class PurchaseOrderRepository implements PurchaseOrderRepositoryInterface
      * @param CollectionProcessorInterface $collectionProcessor
      */
     public function __construct(
-        PurchaseOrderResource $resource,
-        PurchaseOrderInterfaceFactory $purchaseOrderFactory,
-        PurchaseOrderCollectionFactory $purchaseOrderCollectionFactory,
-        PurchaseOrderSearchResultsInterfaceFactory $searchResultsFactory,
-        CollectionProcessorInterface $collectionProcessor
+        protected PurchaseOrderResource $resource,
+        protected PurchaseOrderInterfaceFactory $purchaseOrderFactory,
+        protected PurchaseOrderCollectionFactory $purchaseOrderCollectionFactory,
+        protected PurchaseOrderSearchResultsInterfaceFactory $searchResultsFactory,
+        protected CollectionProcessorInterface $collectionProcessor
     ) {
-        $this->resource = $resource;
-        $this->purchaseOrderFactory = $purchaseOrderFactory;
-        $this->purchaseOrderCollectionFactory = $purchaseOrderCollectionFactory;
-        $this->searchResultsFactory = $searchResultsFactory;
-        $this->collectionProcessor = $collectionProcessor;
     }
 
     /**

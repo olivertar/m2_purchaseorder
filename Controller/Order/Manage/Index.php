@@ -23,21 +23,6 @@ use Orangecat\Company\Api\Data\RoleInterface;
 class Index extends Action implements HttpGetActionInterface
 {
     /**
-     * @var PageFactory
-     */
-    protected $resultPageFactory;
-
-    /**
-     * @var Session
-     */
-    protected $customerSession;
-
-    /**
-     * @var CompanyManagementInterface
-     */
-    protected $companyManagement;
-
-    /**
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param Session $customerSession
@@ -45,13 +30,10 @@ class Index extends Action implements HttpGetActionInterface
      */
     public function __construct(
         Context $context,
-        PageFactory $resultPageFactory,
-        Session $customerSession,
-        CompanyManagementInterface $companyManagement
+        protected PageFactory $resultPageFactory,
+        protected Session $customerSession,
+        protected CompanyManagementInterface $companyManagement
     ) {
-        $this->resultPageFactory = $resultPageFactory;
-        $this->customerSession = $customerSession;
-        $this->companyManagement = $companyManagement;
         parent::__construct($context);
     }
 
@@ -70,7 +52,9 @@ class Index extends Action implements HttpGetActionInterface
         $roleId = (int)$this->companyManagement->getRoleIdByCustomerId($customerId);
 
         if ($roleId !== RoleInterface::ADMIN_ROLE_ID && $roleId !== RoleInterface::MANAGER_ROLE_ID) {
-            $this->messageManager->addErrorMessage(__('Access denied. You do not have permission to manage company purchase orders.'));
+            $this->messageManager->addErrorMessage(
+                __('Access denied. You do not have permission to manage company purchase orders.')
+            );
             return $this->_redirect('customer/account');
         }
 

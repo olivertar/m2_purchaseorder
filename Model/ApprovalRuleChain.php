@@ -36,18 +36,14 @@ use Psr\Log\LoggerInterface;
  */
 class ApprovalRuleChain implements ApprovalRuleInterface
 {
-    /**
-     * @var ApprovalRuleInterface[]
-     */
-    private array $rules;
 
     /**
-     * @param ApprovalRuleInterface[] $rules  Injected by di.xml
-     * @param LoggerInterface         $logger
+     * @param LoggerInterface $logger
+     * @param ApprovalRuleInterface[] $rules Injected by di.xml
      */
     public function __construct(
         private readonly LoggerInterface $logger,
-        array $rules = []
+        private array $rules = []
     ) {
         foreach ($rules as $name => $rule) {
             if (!$rule instanceof ApprovalRuleInterface) {
@@ -61,8 +57,6 @@ class ApprovalRuleChain implements ApprovalRuleInterface
                 );
             }
         }
-
-        $this->rules = $rules;
     }
 
     /**

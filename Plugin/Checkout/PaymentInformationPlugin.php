@@ -53,7 +53,7 @@ class PaymentInformationPlugin
      *
      * @param mixed $subject
      * @param callable $proceed
-     * @param mixed ...$args
+     * @param mixed $args
      * @return int|string 0 when a PO is created, otherwise the real Magento order ID.
      * @throws \Magento\Framework\Exception\LocalizedException On real errors.
      */
