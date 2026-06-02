@@ -1,0 +1,69 @@
+<?php
+/**
+ * This file is part of the Orangecat PurchaseOrder package.
+ *
+ * (c) Oliverio Gombert <olivertar@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+/** @var \Orangecat\PurchaseOrder\Block\Order\ListOrder $block */
+$purchaseOrders = $block->getPurchaseOrders();
+?>
+<div class="block block-purchase-orders">
+    <?php if ($purchaseOrders && count($purchaseOrders)): ?>
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse text-sm">
+                <thead>
+                    <tr>
+                        <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('PO #')) ?></th>
+                        <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('Date')) ?></th>
+                        <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('Ship To')) ?></th>
+                        <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('Order Total')) ?></th>
+                        <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('Status')) ?></th>
+                        <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('Action')) ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($purchaseOrders as $po): ?>
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="p-3 align-middle text-gray-900">
+                                <?= $escaper->escapeHtml($po->getIncrementId()) ?>
+                            </td>
+                            <td class="p-3 align-middle text-gray-900">
+                                <?= $escaper->escapeHtml($po->getCreatedAt()) ?>
+                            </td>
+                            <td class="p-3 align-middle text-gray-900">
+                                <?= $escaper->escapeHtml($po->getGrandTotal() > 0 ? __('Company Office') : '') ?>
+                            </td>
+                            <td class="p-3 align-middle text-gray-900">
+                                <?= /* @noEscape */ $block->formatPrice($po->getGrandTotal()) ?>
+                            </td>
+                            <td class="p-3 align-middle text-gray-900">
+                                <?= $escaper->escapeHtml($block->getStatusLabel($po->getStatus())) ?>
+                            </td>
+                            <td class="p-3 align-middle text-gray-900">
+                                <a href="<?= $escaper->escapeUrl($block->getViewUrl($po)) ?>"
+                                   class="btn btn-secondary btn-size-sm">
+                                    <?= $escaper->escapeHtml(__('View Order')) ?>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php else: ?>
+        <div class="message info">
+            <span><?= $escaper->escapeHtml(__('You have no purchase orders.')) ?></span>
+        </div>
+    <?php endif; ?>
+
+    <div class="mt-6">
+        <a href="<?= $escaper->escapeUrl($block->getUrl('customer/account')) ?>"
+           class="btn btn-secondary">
+            <?= $escaper->escapeHtml(__('Back')) ?>
+        </a>
+    </div>
+</div>

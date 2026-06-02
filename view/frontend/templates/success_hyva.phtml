@@ -1,0 +1,30 @@
+<?php
+/**
+ * This file is part of the Orangecat PurchaseOrder package.
+ *
+ * (c) Oliverio Gombert <olivertar@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Orangecat\PurchaseOrder\ViewModel\Checkout\Success $viewModel */
+$viewModel       = $block->getViewModel();
+$poId            = $viewModel->getPurchaseOrderId();
+$poIncrementId   = $viewModel->getPurchaseOrderIncrementId();
+?>
+<?php if ($poId): ?>
+    <div class="message success mb-6">
+        <div>
+            <p class="font-semibold mb-1">
+                <?= $escaper->escapeHtml(__('Your purchase order has been received.')) ?>
+            </p>
+            <p><?= $escaper->escapeHtml(__('Your purchase order number is: %1.', $poIncrementId)) ?></p>
+            <p><?= $escaper->escapeHtml(__('It is currently pending approval.')) ?></p>
+            <p class="mt-1">
+                <?= $escaper->escapeHtml(__("We'll email you a confirmation when your order is approved.")) ?>
+            </p>
+        </div>
+    </div>
+<?php endif; ?>

@@ -1,0 +1,172 @@
+<?php
+/**
+ * This file is part of the Orangecat PurchaseOrder package.
+ *
+ * (c) Oliverio Gombert <olivertar@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+/** @var \Orangecat\PurchaseOrder\Block\Order\View $block */
+$po     = $block->getPurchaseOrder();
+$items  = $block->getSnapshotItems();
+$totals = $block->getSnapshotTotals();
+$logs   = $block->getActivityLog();
+?>
+<?php if ($po): ?>
+
+    <h2 class="text-lg font-semibold mb-4">
+        <?= $escaper->escapeHtml(__('Items Ordered')) ?>
+    </h2>
+
+    <div class="overflow-x-auto mb-6">
+        <table class="w-full border-collapse text-sm">
+            <thead>
+                <tr>
+                    <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('Product Name')) ?></th>
+                    <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('SKU')) ?></th>
+                    <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('Price')) ?></th>
+                    <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('Qty')) ?></th>
+                    <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('Subtotal')) ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($items as $item): ?>
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                        <td class="p-3 align-middle text-gray-900 font-medium">
+                            <?= $escaper->escapeHtml($item['name']) ?>
+                        </td>
+                        <td class="p-3 align-middle text-gray-900">
+                            <?= $escaper->escapeHtml($item['sku']) ?>
+                        </td>
+                        <td class="p-3 align-middle text-gray-900">
+                            <?= /* @noEscape */ $block->formatPrice($item['price']) ?>
+                        </td>
+                        <td class="p-3 align-middle text-gray-900">
+                            <?= (float)$item['qty'] ?>
+                        </td>
+                        <td class="p-3 align-middle text-gray-900">
+                            <?= /* @noEscape */ $block->formatPrice($item['row_total']) ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+            <tfoot>
+                <tr class="border-t border-gray-200">
+                    <th colspan="4" class="px-3 py-2 text-right text-sm font-semibold text-gray-700" scope="row">
+                        <?= $escaper->escapeHtml(__('Subtotal')) ?>
+                    </th>
+                    <td class="px-3 py-2 text-sm text-gray-900">
+                        <?= /* @noEscape */ $block->formatPrice($totals['subtotal']) ?>
+                    </td>
+                </tr>
+                <tr class="border-t border-gray-100">
+                    <th colspan="4" class="px-3 py-2 text-right text-sm font-semibold text-gray-700" scope="row">
+                        <?= $escaper->escapeHtml(__('Shipping & Handling')) ?>
+                    </th>
+                    <td class="px-3 py-2 text-sm text-gray-900">
+                        <?= /* @noEscape */ $block->formatPrice($totals['shipping_amount']) ?>
+                    </td>
+                </tr>
+                <tr class="border-t border-gray-100">
+                    <th colspan="4" class="px-3 py-2 text-right text-sm font-semibold text-gray-700" scope="row">
+                        <?= $escaper->escapeHtml(__('Tax')) ?>
+                    </th>
+                    <td class="px-3 py-2 text-sm text-gray-900">
+                        <?= /* @noEscape */ $block->formatPrice($totals['tax_amount']) ?>
+                    </td>
+                </tr>
+                <tr class="border-t-2 border-gray-300">
+                    <th colspan="4" class="px-3 py-2 text-right text-sm font-bold text-gray-900" scope="row">
+                        <?= $escaper->escapeHtml(__('Grand Total')) ?>
+                    </th>
+                    <td class="px-3 py-2 font-bold text-gray-900">
+                        <?= /* @noEscape */ $block->formatPrice($totals['grand_total']) ?>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <h2 class="text-lg font-semibold mb-4">
+        <?= $escaper->escapeHtml(__('Purchase Order Information')) ?>
+    </h2>
+
+    <div class="flex flex-wrap gap-8 mb-6 text-sm">
+        <div>
+            <div class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">
+                <?= $escaper->escapeHtml(__('Shipping Method')) ?>
+            </div>
+            <div class="text-gray-900">
+                <?= $escaper->escapeHtml($totals['shipping_method'] ?? __('N/A')) ?>
+            </div>
+        </div>
+        <div>
+            <div class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">
+                <?= $escaper->escapeHtml(__('Buyer')) ?>
+            </div>
+            <div class="text-gray-900">
+                <?= $escaper->escapeHtml($block->getCreatorName($po)) ?>
+            </div>
+        </div>
+        <div>
+            <div class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">
+                <?= $escaper->escapeHtml(__('Status')) ?>
+            </div>
+            <div class="text-gray-900">
+                <?= $escaper->escapeHtml($block->getStatusLabel($po->getStatus())) ?>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="text-lg font-semibold mb-4">
+        <?= $escaper->escapeHtml(__('Activity Log')) ?>
+    </h2>
+
+    <div class="overflow-x-auto mb-6">
+        <table class="w-full border-collapse text-sm">
+            <thead>
+                <tr>
+                    <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('Date')) ?></th>
+                    <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('Action')) ?></th>
+                    <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('Notes')) ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($logs as $log): ?>
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                        <td class="p-3 align-middle text-gray-900">
+                            <?= $escaper->escapeHtml($log->getCreatedAt()) ?>
+                        </td>
+                        <td class="p-3 align-middle text-gray-900">
+                            <?= $escaper->escapeHtml(ucfirst($log->getAction())) ?>
+                        </td>
+                        <td class="p-3 align-middle text-gray-900">
+                            <?= $escaper->escapeHtml($log->getComment()) ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="flex flex-wrap gap-3 pt-5 border-t border-gray-200">
+        <?php if ($block->canCancel()): ?>
+            <form action="<?= $escaper->escapeUrl($block->getCancelUrl()) ?>"
+                  method="post"
+                  x-data
+                  @submit.prevent="confirm('<?= $escaper->escapeJs(__('Are you sure you want to cancel this purchase order? This action cannot be undone.')) ?>') && $el.submit()">
+                <?= $block->getBlockHtml('formkey') ?>
+                <button type="submit" class="btn btn-primary text-red-600 hover:text-red-700">
+                    <?= $escaper->escapeHtml(__('Cancel Purchase Order')) ?>
+                </button>
+            </form>
+        <?php endif; ?>
+        <a href="<?= $escaper->escapeUrl($block->getUrl('*/*/index')) ?>"
+           class="btn btn-secondary">
+            <?= $escaper->escapeHtml(__('Back to My Purchase Orders')) ?>
+        </a>
+    </div>
+
+<?php endif; ?>

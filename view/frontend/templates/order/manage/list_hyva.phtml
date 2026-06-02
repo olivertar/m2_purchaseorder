@@ -1,0 +1,130 @@
+<?php
+/**
+ * This file is part of the Orangecat PurchaseOrder package.
+ *
+ * (c) Oliverio Gombert <olivertar@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+/** @var \Orangecat\PurchaseOrder\Block\Order\Manage\ListOrder $block */
+$purchaseOrders = $block->getPurchaseOrders();
+$pending = \Orangecat\PurchaseOrder\Api\Data\PurchaseOrderInterface::STATUS_PENDING_APPROVAL;
+?>
+<div class="block block-purchase-orders-manage"
+     x-data="{ rejectModal: false, rejectUrl: '', rejectComment: '' }">
+
+    <?php if ($purchaseOrders && count($purchaseOrders)): ?>
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse text-sm">
+                <thead>
+                    <tr>
+                        <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('PO #')) ?></th>
+                        <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('Date')) ?></th>
+                        <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('Buyer')) ?></th>
+                        <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('Order Total')) ?></th>
+                        <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('Status')) ?></th>
+                        <th class="text-left px-3 py-3 bg-gray-100 border-b-2 border-gray-300 font-semibold text-xs uppercase tracking-wider text-gray-500 whitespace-nowrap"><?= $escaper->escapeHtml(__('Action')) ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($purchaseOrders as $po): ?>
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="p-3 align-middle text-gray-900">
+                                <?= $escaper->escapeHtml($po->getIncrementId()) ?>
+                            </td>
+                            <td class="p-3 align-middle text-gray-900">
+                                <?= $escaper->escapeHtml($po->getCreatedAt()) ?>
+                            </td>
+                            <td class="p-3 align-middle text-gray-900">
+                                <?= $escaper->escapeHtml($block->getCreatorName($po)) ?>
+                            </td>
+                            <td class="p-3 align-middle text-gray-900">
+                                <?= /* @noEscape */ $block->formatPrice($po->getGrandTotal()) ?>
+                            </td>
+                            <td class="p-3 align-middle text-gray-900">
+                                <?= $escaper->escapeHtml($block->getStatusLabel($po->getStatus())) ?>
+                            </td>
+                            <td class="p-3 align-middle text-gray-900">
+                                <div class="flex gap-2 flex-wrap items-center">
+                                    <a href="<?= $escaper->escapeUrl($block->getViewUrlForAdmin($po)) ?>"
+                                       class="btn btn-secondary btn-size-sm">
+                                        <?= $escaper->escapeHtml(__('View')) ?>
+                                    </a>
+                                    <?php if ($po->getStatus() === $pending): ?>
+                                        <form action="<?= $escaper->escapeUrl($block->getApproveUrl($po)) ?>"
+                                              method="post"
+                                              @submit.prevent="confirm('<?= $escaper->escapeJs(__('Are you sure you want to approve this purchase order?')) ?>') && $el.submit()">
+                                            <?= $block->getBlockHtml('formkey') ?>
+                                            <button type="submit" class="btn btn-primary btn-size-sm">
+                                                <?= $escaper->escapeHtml(__('Approve')) ?>
+                                            </button>
+                                        </form>
+                                        <button type="button"
+                                                class="btn btn-secondary btn-size-sm text-red-600 hover:text-red-700"
+                                                @click="rejectUrl = '<?= $escaper->escapeJs($block->getRejectUrl($po)) ?>'; rejectModal = true; rejectComment = ''">
+                                            <?= $escaper->escapeHtml(__('Reject')) ?>
+                                        </button>
+                                    <?php endif; ?>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php else: ?>
+        <div class="message info">
+            <span><?= $escaper->escapeHtml(__('You have no company purchase orders to manage.')) ?></span>
+        </div>
+    <?php endif; ?>
+
+    <div class="mt-6">
+        <a href="<?= $escaper->escapeUrl($block->getUrl('customer/account')) ?>"
+           class="btn btn-secondary">
+            <?= $escaper->escapeHtml(__('Back')) ?>
+        </a>
+    </div>
+
+    <!-- Reject modal -->
+    <div x-show="rejectModal"
+         x-cloak
+         class="fixed inset-0 z-[9999] flex items-center justify-center">
+        <div class="absolute inset-0 bg-black/50"
+             @click="rejectModal = false; rejectComment = ''"></div>
+        <div class="relative z-[10000] w-full max-w-md p-6 bg-white shadow-xl">
+            <h3 class="text-lg font-semibold mb-4">
+                <?= $escaper->escapeHtml(__('Reject Purchase Order')) ?>
+            </h3>
+            <form :action="rejectUrl"
+                  method="post"
+                  @submit.prevent="rejectComment.trim() ? $el.submit() : void 0">
+                <?= $block->getBlockHtml('formkey') ?>
+                <div class="mb-4">
+                    <label class="label block mb-1" for="reject-comment">
+                        <?= $escaper->escapeHtml(__('Reason for rejection')) ?>
+                        <span class="text-red-500">*</span>
+                    </label>
+                    <textarea id="reject-comment"
+                              name="comment"
+                              rows="3"
+                              class="form-textarea w-full"
+                              x-model="rejectComment"
+                              required></textarea>
+                </div>
+                <div class="flex gap-3 justify-end pt-4 border-t border-gray-200">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            @click="rejectModal = false; rejectComment = ''">
+                        <?= $escaper->escapeHtml(__('Cancel')) ?>
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <?= $escaper->escapeHtml(__('Confirm Rejection')) ?>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
