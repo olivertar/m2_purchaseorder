@@ -1,11 +1,34 @@
 {
     "name": "orangecat/module-purchase-order",
-    "description": "Orangecat Purchase Order module for B2B",
+    "description": "Purchase order approval workflow for Magento 2 B2B — intercepts checkout, holds carts as reviewable POs, and converts approved ones into sales orders",
     "type": "magento2-module",
-    "version": "1.0.0",
+    "license": [
+        "OSL-3.0"
+    ],
+    "authors": [
+        {
+            "name": "Oliverio Gombert",
+            "email": "olivertar@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "keywords": [
+        "magento2",
+        "b2b",
+        "purchase-order",
+        "orangecat"
+    ],
     "require": {
-        "php": "~8.1.0||~8.2.0",
+        "php": ">=8.1",
         "magento/framework": "*",
+        "magento/module-checkout": "*",
+        "magento/module-customer": "*",
+        "magento/module-quote": "*",
+        "magento/module-sales": "*",
+        "magento/module-catalog-inventory": "*",
+        "magento/module-store": "*",
+        "magento/module-email": "*",
+        "orangecat/core": "*",
         "orangecat/module-company": "*"
     },
     "autoload": {
