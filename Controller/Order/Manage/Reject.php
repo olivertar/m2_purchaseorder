@@ -18,6 +18,8 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Data\Form\FormKey\Validator;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Orangecat\PurchaseOrder\Api\PurchaseOrderRepositoryInterface;
 use Orangecat\PurchaseOrder\Model\PurchaseOrderManagement;
 use Orangecat\Company\Api\CompanyManagementInterface;
 use Orangecat\Company\Api\Data\RoleInterface;
@@ -30,13 +32,15 @@ class Reject extends Action implements HttpPostActionInterface
      * @param PurchaseOrderManagement $purchaseOrderManagement
      * @param Validator $formKeyValidator
      * @param CompanyManagementInterface $companyManagement
+     * @param PurchaseOrderRepositoryInterface $purchaseOrderRepository
      */
     public function __construct(
         Context $context,
         protected Session $customerSession,
         protected PurchaseOrderManagement $purchaseOrderManagement,
         protected Validator $formKeyValidator,
-        protected CompanyManagementInterface $companyManagement
+        protected CompanyManagementInterface $companyManagement,
+        protected PurchaseOrderRepositoryInterface $purchaseOrderRepository
     ) {
         parent::__construct($context);
     }
@@ -67,8 +71,24 @@ class Reject extends Action implements HttpPostActionInterface
         }
 
         $poId = (int)$this->getRequest()->getParam('id');
-        $actorId = (int)$this->customerSession->getCustomerId();
-        $comment = (string)$this->getRequest()->getParam('comment', '');
+
+        try {
+            $purchaseOrder = $this->purchaseOrderRepository->getById($poId);
+        } catch (NoSuchEntityException $e) {
+            $this->messageManager->addErrorMessage(__('Purchase order not found.'));
+            return $this->_redirect('*/*/index');
+        }
+
+        $actorCompanyId = (int)$this->companyManagement->getCompanyIdByCustomerId($customerId);
+        if (!$actorCompanyId || $actorCompanyId !== (int)$purchaseOrder->getCompanyId()) {
+            $this->messageManager->addErrorMessage(
+                __('Access denied. You do not have permission to manage this purchase order.')
+            );
+            return $this->_redirect('*/*/index');
+        }
+
+        $actorId = $customerId;
+        $comment = strip_tags((string)$this->getRequest()->getParam('comment', ''));
 
         try {
             $this->purchaseOrderManagement->rejectPurchaseOrder($poId, $actorId, $comment);

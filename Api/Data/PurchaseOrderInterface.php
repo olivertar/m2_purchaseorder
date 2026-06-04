@@ -27,6 +27,7 @@ interface PurchaseOrderInterface extends ExtensibleDataInterface
     public const STATUS = 'status';
     public const GRAND_TOTAL = 'grand_total';
     public const SNAPSHOT = 'snapshot';
+    public const SNAPSHOT_HASH = 'snapshot_hash';
     public const ORDER_ID = 'order_id';
     public const ORDER_INCREMENT_ID = 'order_increment_id';
     public const EXPIRES_AT = 'expires_at';
@@ -159,6 +160,21 @@ interface PurchaseOrderInterface extends ExtensibleDataInterface
      * @return $this
      */
     public function setSnapshot($snapshot);
+
+    /**
+     * Get snapshot HMAC hash.
+     *
+     * @return string|null
+     */
+    public function getSnapshotHash();
+
+    /**
+     * Set snapshot HMAC hash.
+     *
+     * @param string $hash
+     * @return $this
+     */
+    public function setSnapshotHash($hash);
 
     /**
      * Get order ID.

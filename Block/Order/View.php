@@ -21,6 +21,8 @@ use Orangecat\PurchaseOrder\Api\Data\PurchaseOrderInterface;
 use Orangecat\PurchaseOrder\Api\PurchaseOrderRepositoryInterface;
 use Orangecat\PurchaseOrder\Model\PurchaseOrderManagement;
 use Orangecat\PurchaseOrder\Model\ResourceModel\PurchaseOrderLog\CollectionFactory as LogCollectionFactory;
+use Orangecat\Company\Api\CompanyManagementInterface;
+use Orangecat\Company\Api\Data\RoleInterface;
 
 /**
  * Block for viewing a single purchase order.
@@ -47,6 +49,7 @@ class View extends Template
         protected Session $customerSession,
         protected CustomerRepositoryInterface $customerRepository,
         protected \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency,
+        protected CompanyManagementInterface $companyManagement,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -72,10 +75,29 @@ class View extends Template
     {
         $id = $this->getRequest()->getParam('id');
         try {
-            return $this->purchaseOrderRepository->getById((int)$id);
+            $po = $this->purchaseOrderRepository->getById((int)$id);
         } catch (\Exception $e) {
             return null;
         }
+
+        $customerId = (int)$this->customerSession->getCustomerId();
+        if (!$customerId) {
+            return null;
+        }
+
+        if ((int)$po->getCreatorId() === $customerId) {
+            return $po;
+        }
+
+        $roleId = (int)$this->companyManagement->getRoleIdByCustomerId($customerId);
+        if ($roleId === RoleInterface::ADMIN_ROLE_ID || $roleId === RoleInterface::MANAGER_ROLE_ID) {
+            $userCompanyId = (int)$this->companyManagement->getCompanyIdByCustomerId($customerId);
+            if ($userCompanyId && $userCompanyId === (int)$po->getCompanyId()) {
+                return $po;
+            }
+        }
+
+        return null;
     }
 
     /**

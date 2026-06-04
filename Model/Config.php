@@ -36,12 +36,18 @@ class Config
 
     /**
      * Role names that are allowed to approve or reject Purchase Orders.
-     * Stored here so callers don't need to hard-code strings.
+     *
+     * IMPORTANT: These strings must exactly match the role names seeded by
+     * Orangecat_Company (Setup/Patch/Data/CreateDefaultRoles.php or equivalent).
+     * If Company module role names are renamed, authorization silently breaks.
+     * Use an integration test to assert these values exist in the company_roles table.
      */
     public const APPROVER_ROLE_NAMES = ['Company Admin', 'Company Manager'];
 
     /**
      * The role name that triggers PO-approval rules during checkout.
+     *
+     * @see self::APPROVER_ROLE_NAMES for cross-module contract warning.
      */
     public const BUYER_ROLE_NAME = 'Company Buyer';
 

@@ -143,6 +143,22 @@ class PurchaseOrder extends AbstractExtensibleModel implements PurchaseOrderInte
     /**
      * @inheritdoc
      */
+    public function getSnapshotHash()
+    {
+        return $this->getData(self::SNAPSHOT_HASH);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setSnapshotHash($hash)
+    {
+        return $this->setData(self::SNAPSHOT_HASH, $hash);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getOrderId()
     {
         return $this->getData(self::ORDER_ID);

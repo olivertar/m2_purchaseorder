@@ -9,6 +9,7 @@
         <column xsi:type="varchar" name="status" length="50" nullable="false" comment="PO Status"/>
         <column xsi:type="decimal" name="grand_total" precision="12" scale="4" nullable="false" comment="Grand Total"/>
         <column xsi:type="mediumtext" name="snapshot" nullable="true" comment="Quote Snapshot JSON"/>
+        <column xsi:type="varchar" name="snapshot_hash" length="64" nullable="true" comment="HMAC-SHA256 of snapshot for integrity verification"/>
         <column xsi:type="int" name="order_id" padding="10" unsigned="true" nullable="true" comment="Magento Order ID"/>
         <column xsi:type="varchar" name="order_increment_id" length="50" nullable="true" comment="Magento Order Increment ID"/>
         <column xsi:type="timestamp" name="expires_at" on_update="false" nullable="true" comment="Expiration Date"/>

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Orangecat\PurchaseOrder\Model;
 
 use Magento\CatalogInventory\Api\StockRegistryInterface;
+use Magento\Framework\App\DeploymentConfig;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json;
@@ -74,7 +75,8 @@ class PurchaseOrderManagement
         private readonly Config                              $config,
         private readonly LoggerInterface                     $logger,
         private readonly Json                                $json,
-        private readonly CheckoutState                       $checkoutState
+        private readonly CheckoutState                       $checkoutState,
+        private readonly DeploymentConfig                    $deploymentConfig
     ) {
     }
 
@@ -110,6 +112,7 @@ class PurchaseOrderManagement
 
         // Freeze prices and cart state into a JSON snapshot BEFORE deactivating the quote.
         $snapshot = $this->buildSnapshot($quote);
+        $snapshotHash = $this->computeSnapshotHash($snapshot);
 
         // Calculate optional expiry date.
         $expiresAt = null;
@@ -126,6 +129,7 @@ class PurchaseOrderManagement
         $purchaseOrder->setStatus(PurchaseOrderInterface::STATUS_PENDING_APPROVAL);
         $purchaseOrder->setGrandTotal((float) $quote->getGrandTotal());
         $purchaseOrder->setSnapshot($snapshot);
+        $purchaseOrder->setSnapshotHash($snapshotHash);
         $purchaseOrder->setExpiresAt($expiresAt);
 
         // First save to obtain the DB-assigned entity_id (auto-increment; no race condition).
@@ -209,7 +213,19 @@ class PurchaseOrderManagement
             ));
         }
 
-        // --- Guard 4: stock ---
+        // --- Guard 4: snapshot integrity ---
+        $snapshotHash = $purchaseOrder->getSnapshotHash();
+        if ($snapshotHash !== null) {
+            $expected = $this->computeSnapshotHash($purchaseOrder->getSnapshot());
+            if (!hash_equals($expected, $snapshotHash)) {
+                throw new LocalizedException(__(
+                    'Purchase order %1 failed integrity check. Snapshot data may have been tampered with.',
+                    $purchaseOrder->getIncrementId()
+                ));
+            }
+        }
+
+        // --- Guard 5: stock ---
         $snapshotData = $this->json->unserialize($purchaseOrder->getSnapshot());
         $this->checkStockForSnapshot($snapshotData['items'] ?? []);
 
@@ -424,6 +440,11 @@ class PurchaseOrderManagement
      * @param CartInterface $quote
      * @return string JSON-encoded snapshot.
      */
+    private function computeSnapshotHash(string $snapshot): string
+    {
+        return hash_hmac('sha256', $snapshot, (string)$this->deploymentConfig->get('crypt/key'));
+    }
+
     private function buildSnapshot(CartInterface $quote): string
     {
         $items = [];
