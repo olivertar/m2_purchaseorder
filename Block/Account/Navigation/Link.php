@@ -14,11 +14,12 @@ namespace Orangecat\PurchaseOrder\Block\Account\Navigation;
 
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Framework\App\DefaultPathInterface;
+use Magento\Customer\Block\Account\SortLink;
 use Magento\Customer\Model\Session as CustomerSession;
 use Orangecat\Company\Api\CompanyManagementInterface;
 use Orangecat\Company\Api\Data\RoleInterface;
 
-class Link extends \Magento\Framework\View\Element\Html\Link\Current
+class Link extends SortLink
 {
     /**
      * Link constructor.

@@ -12,18 +12,18 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="customer_account_navigation">
-            <block class="Magento\Framework\View\Element\Html\Link\Current" name="customer-account-navigation-my-purchase-orders-link" ifconfig="mycompany/purchase_orders/enabled">
+            <block class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-account-navigation-my-purchase-orders-link" ifconfig="mycompany/purchase_orders/enabled">
                 <arguments>
                     <argument name="path" xsi:type="string">purchaseorder/order/index</argument>
                     <argument name="label" xsi:type="string" translate="true">My Purchase Orders</argument>
-                    <argument name="sortOrder" xsi:type="number">240</argument>
+                    <argument name="sortOrder" xsi:type="number">247</argument>
                 </arguments>
             </block>
             <block class="Orangecat\PurchaseOrder\Block\Account\Navigation\Link" name="customer-account-navigation-company-purchase-orders-link" ifconfig="mycompany/purchase_orders/enabled">
                 <arguments>
                     <argument name="path" xsi:type="string">purchaseorder/order_manage/index</argument>
                     <argument name="label" xsi:type="string" translate="true">Company Purchase Orders</argument>
-                    <argument name="sortOrder" xsi:type="number">245</argument>
+                    <argument name="sortOrder" xsi:type="number">246</argument>
                 </arguments>
             </block>
         </referenceBlock>
