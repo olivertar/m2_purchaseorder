@@ -1,0 +1,73 @@
+"Access denied. You do not have permission to approve company purchase orders","Access denied. You do not have permission to approve company purchase orders"
+"Access denied. You do not have permission to manage company purchase orders","Access denied. You do not have permission to manage company purchase orders"
+"Access denied. You do not have permission to manage this purchase order","Access denied. You do not have permission to manage this purchase order"
+"Access denied. You do not have permission to reject company purchase orders","Access denied. You do not have permission to reject company purchase orders"
+"Access denied. You do not have permission to view this purchase order","Access denied. You do not have permission to view this purchase order"
+Action,Action
+"Activity Log","Activity Log"
+Approve,Approve
+Approved,Approved
+"Are you sure you want to approve this purchase order?","Are you sure you want to approve this purchase order?"
+"Are you sure you want to cancel this purchase order? This action cannot be undone","Are you sure you want to cancel this purchase order? This action cannot be undone"
+Back,Back
+"Back to My Purchase Orders","Back to My Purchase Orders"
+Buyer,Buyer
+Cancel,Cancel
+Canceled,Canceled
+"Cancel Purchase Order","Cancel Purchase Order"
+"Company Office","Company Office"
+"Confirm Rejection","Confirm Rejection"
+"Could not delete the purchase order: %1","Could not delete the purchase order: %1"
+"Could not save the purchase order: %1","Could not save the purchase order: %1"
+"Could not save the purchase order log: %1","Could not save the purchase order log: %1"
+Date,Date
+Expired,Expired
+"Grand Total","Grand Total"
+"Items Ordered","Items Ordered"
+"It is currently pending approval","It is currently pending approval"
+"Manage Company Purchase Orders","Manage Company Purchase Orders"
+"My Purchase Orders","My Purchase Orders"
+"N/A","N/A"
+Notes,Notes
+"Order Placed","Order Placed"
+"Order Total","Order Total"
+"Pending Approval","Pending Approval"
+"PO #","PO #"
+Price,Price
+"Product Name","Product Name"
+"Purchase Order # %1","Purchase Order # %1"
+"Purchase order approved successfully. Order %1 has been created","Purchase order approved successfully. Order %1 has been created"
+"Purchase Order Information","Purchase Order Information"
+"Purchase Order Log with id ""%1"" does not exist","Purchase Order Log with id ""%1"" does not exist"
+"Purchase order not found","Purchase order not found"
+"Purchase Orders","Purchase Orders"
+"Purchase Order with id ""%1"" does not exist","Purchase Order with id ""%1"" does not exist"
+Qty,Qty
+"Reason for rejection","Reason for rejection"
+Reject,Reject
+Rejected,Rejected
+"Reject Purchase Order","Reject Purchase Order"
+"Shipping & Handling","Shipping & Handling"
+"Shipping Method","Shipping Method"
+"Ship To","Ship To"
+SKU,SKU
+Status,Status
+Subtotal,Subtotal
+Tax,Tax
+"The purchase order has been rejected","The purchase order has been rejected"
+"This purchase order no longer exists","This purchase order no longer exists"
+Unknown,Unknown
+View,View
+"View Order","View Order"
+"You have no company purchase orders to manage","You have no company purchase orders to manage"
+"You have no purchase orders","You have no purchase orders"
+"Your account does not have a company role assigned","Your account does not have a company role assigned"
+"Your company role could not be determined","Your company role could not be determined"
+"Your purchase order has been received","Your purchase order has been received"
+"Your purchase order number is: %1","Your purchase order number is: %1"
+"You successfully canceled the purchase order","You successfully canceled the purchase order"
+"Enable Purchase Orders","Enable Purchase Orders"
+"Number of days a Purchase Order is valid after creation","Number of days a Purchase Order is valid after creation"
+"Purchase Order Validity (Days)","Purchase Order Validity (Days)"
+"A rejection reason is required","A rejection reason is required"
+"Please enter a rejection reason for PO #","Please enter a rejection reason for PO #"

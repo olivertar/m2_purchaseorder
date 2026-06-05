@@ -1,0 +1,73 @@
+"Access denied. You do not have permission to approve company purchase orders","Acceso denegado. No tiene permiso para aprobar órdenes de compra de la empresa"
+"Access denied. You do not have permission to manage company purchase orders","Acceso denegado. No tiene permiso para gestionar órdenes de compra de la empresa"
+"Access denied. You do not have permission to manage this purchase order","Acceso denegado. No tiene permiso para gestionar esta orden de compra"
+"Access denied. You do not have permission to reject company purchase orders","Acceso denegado. No tiene permiso para rechazar órdenes de compra de la empresa"
+"Access denied. You do not have permission to view this purchase order","Acceso denegado. No tiene permiso para ver esta orden de compra"
+Action,Acción
+"Activity Log","Registro de Actividad"
+Approve,Aprobar
+Approved,Aprobado
+"Are you sure you want to approve this purchase order?","¿Está seguro de que desea aprobar esta orden de compra?"
+"Are you sure you want to cancel this purchase order? This action cannot be undone","¿Está seguro de que desea cancelar esta orden de compra? Esta acción no se puede deshacer"
+Back,Volver
+"Back to My Purchase Orders","Volver a Mis Órdenes de Compra"
+Buyer,Comprador
+Cancel,Cancelar
+Canceled,Cancelado
+"Cancel Purchase Order","Cancelar Orden de Compra"
+"Company Office","Oficina de la Empresa"
+"Confirm Rejection","Confirmar Rechazo"
+"Could not delete the purchase order: %1","No se pudo eliminar la orden de compra: %1"
+"Could not save the purchase order: %1","No se pudo guardar la orden de compra: %1"
+"Could not save the purchase order log: %1","No se pudo guardar el registro de la orden de compra: %1"
+Date,Fecha
+Expired,Vencido
+"Grand Total","Total General"
+"Items Ordered","Artículos Pedidos"
+"It is currently pending approval","Actualmente está pendiente de aprobación"
+"Manage Company Purchase Orders","Gestionar Órdenes de Compra de la Empresa"
+"My Purchase Orders","Mis Órdenes de Compra"
+"N/A","N/A"
+Notes,Notas
+"Order Placed","Pedido Realizado"
+"Order Total","Total del Pedido"
+"Pending Approval","Pendiente de Aprobación"
+"PO #","OC #"
+Price,Precio
+"Product Name","Nombre del Producto"
+"Purchase Order # %1","Orden de Compra # %1"
+"Purchase order approved successfully. Order %1 has been created","Orden de compra aprobada correctamente. Se ha creado el pedido %1"
+"Purchase Order Information","Información de la Orden de Compra"
+"Purchase Order Log with id ""%1"" does not exist","El registro de orden de compra con id ""%1"" no existe"
+"Purchase order not found","Orden de compra no encontrada"
+"Purchase Orders","Órdenes de Compra"
+"Purchase Order with id ""%1"" does not exist","La orden de compra con id ""%1"" no existe"
+Qty,Cantidad
+"Reason for rejection","Motivo del rechazo"
+Reject,Rechazar
+Rejected,Rechazado
+"Reject Purchase Order","Rechazar Orden de Compra"
+"Shipping & Handling","Envío y Manipulación"
+"Shipping Method","Método de Envío"
+"Ship To","Enviar a"
+SKU,SKU
+Status,Estado
+Subtotal,Subtotal
+Tax,Impuesto
+"The purchase order has been rejected","La orden de compra ha sido rechazada"
+"This purchase order no longer exists","Esta orden de compra ya no existe"
+Unknown,Desconocido
+View,Ver
+"View Order","Ver Pedido"
+"You have no company purchase orders to manage","No tiene órdenes de compra de empresa para gestionar"
+"You have no purchase orders","No tiene órdenes de compra"
+"Your account does not have a company role assigned","Su cuenta no tiene un rol de empresa asignado"
+"Your company role could not be determined","No se pudo determinar su rol en la empresa"
+"Your purchase order has been received","Su orden de compra ha sido recibida"
+"Your purchase order number is: %1","El número de su orden de compra es: %1"
+"You successfully canceled the purchase order","Ha cancelado correctamente la orden de compra"
+"Enable Purchase Orders","Habilitar Órdenes de Compra"
+"Number of days a Purchase Order is valid after creation","Número de días que una Orden de Compra es válida después de su creación"
+"Purchase Order Validity (Days)","Validez de la Orden de Compra (Días)"
+"A rejection reason is required","Se requiere un motivo de rechazo"
+"Please enter a rejection reason for PO #","Por favor, ingrese un motivo de rechazo para la OC #"

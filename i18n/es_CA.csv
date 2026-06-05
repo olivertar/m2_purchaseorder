@@ -1,0 +1,73 @@
+"Access denied. You do not have permission to approve company purchase orders","Accés denegat. No teniu permís per aprovar ordres de compra de l'empresa"
+"Access denied. You do not have permission to manage company purchase orders","Accés denegat. No teniu permís per gestionar ordres de compra de l'empresa"
+"Access denied. You do not have permission to manage this purchase order","Accés denegat. No teniu permís per gestionar aquesta ordre de compra"
+"Access denied. You do not have permission to reject company purchase orders","Accés denegat. No teniu permís per rebutjar ordres de compra de l'empresa"
+"Access denied. You do not have permission to view this purchase order","Accés denegat. No teniu permís per veure aquesta ordre de compra"
+Action,Acció
+"Activity Log","Registre d'Activitat"
+Approve,Aprovar
+Approved,Aprovat
+"Are you sure you want to approve this purchase order?","Esteu segur que voleu aprovar aquesta ordre de compra?"
+"Are you sure you want to cancel this purchase order? This action cannot be undone","Esteu segur que voleu cancel·lar aquesta ordre de compra? Aquesta acció no es pot desfer"
+Back,Tornar
+"Back to My Purchase Orders","Tornar a les Meves Ordres de Compra"
+Buyer,Comprador
+Cancel,Cancel·lar
+Canceled,Cancel·lat
+"Cancel Purchase Order","Cancel·lar Ordre de Compra"
+"Company Office","Oficina de l'Empresa"
+"Confirm Rejection","Confirmar Rebuig"
+"Could not delete the purchase order: %1","No s'ha pogut eliminar l'ordre de compra: %1"
+"Could not save the purchase order: %1","No s'ha pogut desar l'ordre de compra: %1"
+"Could not save the purchase order log: %1","No s'ha pogut desar el registre de l'ordre de compra: %1"
+Date,Data
+Expired,Vençut
+"Grand Total","Total General"
+"Items Ordered","Articles Demanats"
+"It is currently pending approval","Actualment està pendent d'aprovació"
+"Manage Company Purchase Orders","Gestionar Ordres de Compra de l'Empresa"
+"My Purchase Orders","Les Meves Ordres de Compra"
+"N/A","N/D"
+Notes,Notes
+"Order Placed","Comanda Realitzada"
+"Order Total","Total de la Comanda"
+"Pending Approval","Pendent d'Aprovació"
+"PO #","OC #"
+Price,Preu
+"Product Name","Nom del Producte"
+"Purchase Order # %1","Ordre de Compra # %1"
+"Purchase order approved successfully. Order %1 has been created","Ordre de compra aprovada correctament. S'ha creat la comanda %1"
+"Purchase Order Information","Informació de l'Ordre de Compra"
+"Purchase Order Log with id ""%1"" does not exist","El registre d'ordre de compra amb id ""%1"" no existeix"
+"Purchase order not found","Ordre de compra no trobada"
+"Purchase Orders","Ordres de Compra"
+"Purchase Order with id ""%1"" does not exist","L'ordre de compra amb id ""%1"" no existeix"
+Qty,Quantitat
+"Reason for rejection","Motiu del rebuig"
+Reject,Rebutjar
+Rejected,Rebutjat
+"Reject Purchase Order","Rebutjar Ordre de Compra"
+"Shipping & Handling","Enviament i Manipulació"
+"Shipping Method","Mètode d'Enviament"
+"Ship To","Enviar a"
+SKU,SKU
+Status,Estat
+Subtotal,Subtotal
+Tax,Impost
+"The purchase order has been rejected","L'ordre de compra ha estat rebutjada"
+"This purchase order no longer exists","Aquesta ordre de compra ja no existeix"
+Unknown,Desconegut
+View,Veure
+"View Order","Veure Comanda"
+"You have no company purchase orders to manage","No teniu ordres de compra d'empresa per gestionar"
+"You have no purchase orders","No teniu ordres de compra"
+"Your account does not have a company role assigned","El vostre compte no té un rol d'empresa assignat"
+"Your company role could not be determined","No s'ha pogut determinar el vostre rol a l'empresa"
+"Your purchase order has been received","La vostra ordre de compra ha estat rebuda"
+"Your purchase order number is: %1","El número de la vostra ordre de compra és: %1"
+"You successfully canceled the purchase order","Heu cancel·lat correctament l'ordre de compra"
+"Enable Purchase Orders","Habilitar Ordres de Compra"
+"Number of days a Purchase Order is valid after creation","Nombre de dies que una Ordre de Compra és vàlida després de la seva creació"
+"Purchase Order Validity (Days)","Validesa de l'Ordre de Compra (Dies)"
+"A rejection reason is required","Cal un motiu de rebuig"
+"Please enter a rejection reason for PO #","Si us plau, introduïu un motiu de rebuig per a l'OC #"
